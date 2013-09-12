@@ -1,21 +1,25 @@
 ﻿var cityNameArray = new Array();
 var cinemaNameArray = new Array();
-function StartApp(){
-	var client = new WindowsAzure.MobileServiceClient('https://popcorn.azure-mobile.net/', 'AdnZQCeeAfUOltqBuxcCODRMRVQWEb33'),
+var pricingArray = new Array();
+var pricingList = '';
+var AppId = '';
+var AppURL = '';
+function GetApp(){
+	$.getJSON('app.json', function(data) {
+		AppId = data.id;
+		AppURL = data.url;
+		StartApp();
+	});
+}
+function StartApp(){	
+	var client = new WindowsAzure.MobileServiceClient(AppURL, AppId),
         ScheduleTable = client.getTable('schedule');
 		CityTable = client.getTable('city');
 		CinemaTable = client.getTable('cinema');
+		PricingTable = client.getTable('pricing');
 		
 		//get page wise start data
-		if(pageName == 'home'){
-   	 		getCity();
-		}
-		if(pageName == 'city'){
-			getCity();
-		}
-		if(pageName == 'cinema'){		
-			getCinema()
-		}
+   	 	getCity();
 		//end page wise start data
 		
 		// handle error
@@ -37,7 +41,7 @@ function StartApp(){
 					}
 				});
 			}, handleError).done(function(){
-				
+				$('.loader').hide();
 			});
 		}
 		
@@ -45,7 +49,7 @@ function StartApp(){
 		
 		// get city function
 		function getCinema(city_id){
-			var queryCinema = CinemaTable.where({});
+			var queryCinema = CinemaTable.where({cityid: city_id});
 			$('#cinema').html('<option value="">Select Cinema</option>');
 			queryCinema.read().then(function(todoItemsCinema) {
 				$.each(todoItemsCinema,function(index,item){
@@ -59,7 +63,27 @@ function StartApp(){
 					}
 				});
 			}, handleError).done(function(){
-				
+				$('.loader').hide();
+			});
+		}
+		
+		//end get city function
+		
+		// get city function
+		function getPricing(cinama_id){
+			var queryCinema = PricingTable.where({cinemaid: cinama_id});
+			pricingList = '';
+			pricingList += '<option value="">Select Pricing</option>';
+			queryCinema.read().then(function(todoItemsCinema) {
+				$.each(todoItemsCinema,function(index,item){
+								pricingList += '<option value='+item.id+'>'+item.name+'</option>';					
+								pricingArray[item.id] = item.amount;
+							
+				});
+				$('#moviePrice').html(pricingList);
+				//alert(pricingList);
+			}, handleError).done(function(){
+				$('.loader').hide();
 			});
 		}
 		
@@ -140,27 +164,29 @@ function StartApp(){
 							html +='</div>';
 							html +='</div>';
 							html +='<div class="col-lg-2">';
-							html +='<h1 class="pricingText">PKR 350</h1>';
+							if(pricingArray[item.price]){
+								html +='<h1 class="pricingText">PKR '+pricingArray[item.price]+'</h1>';
+							}
 							html +='</div>';
 							html +='</div> ';             
 							html +='</div>';
 						return  $(html)														
 				});
 				 $('#todo-items').empty().append(listItems).toggle(listItems.length > 0);
-				var cunt = 0;
-				 $.map(todoItems, function(item) {
-					cunt++;
-					uploadScript(cunt);				
-				 });
-			
+				 $('.loader').hide();
 			}, handleError);
     
 		}
 		//end createHtmlForMovies
 		
+		function createHtmlForCinemas(){
+			
+		}
+		
 		// event listener
 		$(document.body).on('change', '#city', function() {
 			if($(this).val() != ''){
+				$('.loader').show();
 				 getCinema($(this).val());
 			}
 			$('#addMovies').hide();
@@ -168,6 +194,7 @@ function StartApp(){
 			$('#fromDate').val('');
 			$('#toDate').val('');
 		});
+		
 		$(document.body).on('click', '.edit', function() {
 			$('#scheduleList').html('');
 			if($(this).attr('data-schedule') != ''){
@@ -271,6 +298,10 @@ function StartApp(){
 		});
 			
 		$(document.body).on('change', '#cinema', function() {
+			if($(this).val() != ''){
+				$('.loader').show();
+				 getPricing($(this).val());
+			}
 			$('#fromDate').val('');
 			$('#toDate').val('');
 			$('#addMovies').hide();
@@ -278,6 +309,7 @@ function StartApp(){
 		});
 		$(document.body).on('change', '#fromDate', function() {
 			if($('#fromDate').val() != '' && $('#toDate').val() != ''){
+				$('.loader').show();
 				createHtmlForMovies();
 				$('#addMovies').show();
 				$('#todo-items').show();
@@ -288,6 +320,7 @@ function StartApp(){
 		});
 		$(document.body).on('change', '#toDate', function() {
 			if($('#fromDate').val() != '' && $('#toDate').val() != ''){
+				$('.loader').show();
 				createHtmlForMovies();
 				$('#addMovies').show();
 				$('#todo-items').show();
@@ -297,7 +330,10 @@ function StartApp(){
 			}
 		});
 		$(document.body).on('click', '.close', function() {
-			ScheduleTable.del({ id: $(this).attr('data-id') }).then(createHtmlForMovies, handleError);
+			$('.loader').show();
+			ScheduleTable.del({ id: $(this).attr('data-id') }).then(createHtmlForMovies, handleError).done(function(){
+				$('.loader').hide();
+			});
 		});
 		$(document.body).on('click', '.closeSch', function() {
 			$(this).parent().parent('li').remove();
@@ -372,6 +408,7 @@ function StartApp(){
 		
 		
 		$('#add-item').on('click',function() {
+			$('.loader').show();
 			var itemSchedule = new Array();
 			$('#scheduleList').find('li').each(function(index, element) {
 				itemSchedule[index]  = new Array();
@@ -424,7 +461,11 @@ function StartApp(){
 							movieschedule:MovieSchedules,
 							parent: 0					
 						};
-						ScheduleTable.insert(theNewRow).then(createHtmlForMovies, handleError);
+						ScheduleTable.insert(theNewRow).then(createHtmlForMovies, handleError).then(function(){
+							$('#myModal').modal('hide');
+						}).done(function(){
+							$('.loader').hide();
+						});
 				}else{
 						var theNewRow = {
 							id: parseInt($('#movieId').val()),
@@ -448,6 +489,8 @@ function StartApp(){
 						};
 						ScheduleTable.update(theNewRow).then(createHtmlForMovies, handleError).then(function(){
 							$('#myModal').modal('hide');
+						}).done(function(){
+							$('.loader').hide();
 						});
 				}
 												

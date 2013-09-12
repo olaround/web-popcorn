@@ -21,3 +21,11 @@ body {
 .closeSch{
 	float:right;
 }
+.loader{
+	position:fixed;
+	right:10px;
+	top:10px;
+	font-size:20px;
+	color:white;
+	z-index:9999;
+}
