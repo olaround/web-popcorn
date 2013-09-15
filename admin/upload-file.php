@@ -1,5 +1,5 @@
 <?php
-$uploaddir = './assets/uploads/'; 
+$uploaddir = '../uploads/'; 
 $random_digit=rand(0000,9999).time();
 
 $new_file_name=$uploaddir.$random_digit.$_FILES['uploadfile']['name'];

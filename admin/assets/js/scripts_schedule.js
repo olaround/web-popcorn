@@ -5,7 +5,7 @@ var pricingList = '';
 var AppId = '';
 var AppURL = '';
 function GetApp(){
-	$.getJSON('app.json', function(data) {
+	$.getJSON('../app.json', function(data) {
 		AppId = data.id;
 		AppURL = data.url;
 		StartApp();
