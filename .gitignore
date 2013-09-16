@@ -12,5 +12,5 @@ logs
 results
 
 npm-debug.log
-uploads
+/uploads/
 !/uploads/README.md
