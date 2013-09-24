@@ -7,7 +7,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="shortcut icon" href="./assets/ico/favicon.png">
-
+	
+    
     <title>Cinema Admin</title>
 
     <!-- Bootstrap core CSS -->
@@ -15,7 +16,6 @@
 
     <!-- Custom styles for this template -->
     <link href="./assets/css/popcorn-admin.css" rel="stylesheet">
-    
     
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -26,7 +26,6 @@
   </head>
 
   <body  onLoad="GetApp();">
-
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -39,10 +38,10 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-           <li><a href="index.html">Cities</a></li>
+            <li><a href="index.html">Cities</a></li>
             <li><a href="cinema.html">Cinamas</a></li>
-            <li class="active"><a href="pricing.html">Pricing</a></li>
-            <li><a href="movies.html">Movies</a></li>
+            <li><a href="pricing.html">Pricing</a></li>
+            <li class="active"><a href="movies.html">Movies</a></li>
             <li><a href="schedule.html">Schedule</a></li>
           </ul>
         </div><!--/.nav-collapse -->        
@@ -61,16 +60,14 @@
                 	<option>Please select City</option>
                 </select>
             </div>
-            <div class="input-group col-lg-6">
+            	<div class="input-group col-lg-6">
                 <span class="label label-info">Cinema</span>
                 <select name="cinema" id="cinema"  class="form-control">
                 	<option>Please select Cinema</option>
                 </select>
             </div>
-            	
             <div class="clear"></div>
           </li>
-          
         </ul>
         </div>
         <div class="clear"></div>
@@ -78,7 +75,7 @@
         
         <div class="clear"></div>
          <div class="col-lg-12">
-        <a id="addPricing" style="display:none;" href="javascript:void(0);" class="btn btn-primary btn-lg">Add Pricing</a>
+        <a id="addMovies" style="display:none;" href="javascript:void(0);" class="btn btn-primary btn-lg">Add Movie</a>
         </div>
          <div class="clear"></div>
         <div class="col-lg-12" id="todo-items" style="display:none;">
@@ -94,40 +91,84 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Add Pricing</h4>
+          <h4 class="modal-title">Add Movie</h4>
         </div>
         <div class="modal-body">
         <div class="container">
         <div class="row">
              <div class="col-lg-12">
-                <div class="col-lg-12">
-                <div class="input-group col-lg-12">
-                     <span class="label label-info">Pricing Name </span> 
-                    <input type="text" id="pricingName" class="form-control" />
+                <div class="col-lg-4">
+                     <div class="col-lg-12">
+                    <img src="assets/images/icon.jpg" width="115" height="155" id="upload">
+                    <span id="status"></span>
+                    <input type="hidden" id="movieImage" >
+                    </div>
                 </div>
-                
-                <div class="input-group col-lg-12">
-                     <span class="label label-info">Pricing Amount</span> 
-                    <input type="text" class="form-control" id="pricingAmount" />
+                <div class="col-lg-8">
+                <div class="input-group col-lg-8">
+                     <span class="label label-info">Movie Title</span> 
+                    <input type="text" id="movieName" class="form-control" />
                 </div>
+                <div class="input-group col-lg-4">
+                     <div class="checkbox">
+                                <label>
+                                  <input type="checkbox" id="movie3d"> 3D
+                                </label>
+                      </div>
+                </div>
+                <div class="input-group col-lg-12">
+                     <span class="label label-info">Cast</span> 
+                    <input type="text"  id="movieCast" class="form-control" />
+                </div>
+                <div class="input-group col-lg-12">
+                     <span class="label label-info">Genre (Comma Seperated)</span> 
+                    <input type="text" class="form-control" id="movieGenre" />
+                </div>
+                <div class="input-group col-lg-6">
+                                <span class="label label-info">HH</span> 
+                                <input maxlength="2"  id="movieDurationHH" type="text" class="form-control" />
+                 </div> 
+                 <div class="input-group col-lg-6"> 
+                                <span class="label label-info">MM</span> 
+                                <input  maxlength="2"  id="movieDurationMM" type="text" class="form-control" />
+                   </div>
+                      
                 </div>
                 </div>
                 </div>
               <div class="clear"></div>
-                  
+                 <div class="input-group col-lg-12">
+                         <span class="label label-info">Price PKR</span> 
+                       <select id="moviePrice" type="text" class="form-control">
+                            <option>Please select Price</option>
+                        </select>
+                  </div>
+                  <div class="input-group col-lg-12">
+                         <span class="label label-info">Synopsis</span> 
+                       <textarea cols="10" rows="10" id="movieSynopsis" type="text" class="form-control"></textarea>
+                            
+                  </div>
+               
+                 <div class="clear"></div>
+                 <div class="col-lg-12">
+                        <div class="checkbox">
+                            <label>
+                              <input id="movieUpcoming" type="checkbox"> Up Coming
+                            </label>
+                        </div>
                  </div>
              </div>
              </div>
         </div>
         <div class="modal-footer">
-        <input type="hidden" id="pricingId">
+        <input type="hidden" id="movieId">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
           <button type="button" class="btn btn-primary" id="add-item">Save</button>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
-   <div class="loader">
+      <div class="loader">
       loading...
       </div>
     <!-- Bootstrap core JavaScript
@@ -136,8 +177,9 @@
     <script src="./assets/js/jquery-2.0.3.min.js"></script>
     <script src="./assets/js/bootstrap.min.js"></script>
     <script src='./assets/js/MobileServices.Web-1.0.0.min.js'></script>
+    <script src='./assets/js/time.js'></script>
     <script type="text/javascript" src="./assets/js/ajaxupload.3.5.js" ></script>
-    <script src="./assets/js/scripts_pricing.js"></script>
+    <script src="assets/js/scripts_movies.js"></script>
     
   </body>
 </html>
