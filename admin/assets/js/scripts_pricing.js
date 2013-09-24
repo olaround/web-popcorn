@@ -130,10 +130,14 @@ function StartApp(){
 		});
 		
 		$(document.body).on('click', '.close', function() {
-			$('.loader').show();
+			if($(this).attr('data-id')){
+			var result = confirm("Are u sure to want to delete ?");
+			if (result==true) {
+				$('.loader').show();
 			PricingTable.del({ id: $(this).attr('data-id') }).then(createHtmlForPricing, handleError).done(function(){
 				$('.loader').hide();
 			});
+			}}
 		});
 		$(document.body).on('click', '#addPricing', function() {
 			$('#pricingId').val('');
