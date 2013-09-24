@@ -191,7 +191,7 @@ function StartApp(){
 							html +='<div class="col-lg-11 movieTitle"> '+MoviesArray[item.movieSelect]+' </div>';
 							html +='<div class="col-lg-1">';
 							html +='<button  class="close"  data-id="'+item.id+'">x</button>';
-							html +="<button data-schedule='"+item.movieschedule+"' data-id='"+item.id+"'  type='button' class='edit' title='edit'><span class='glyphicon glyphicon-pencil'></span></button>";
+							html +="<button data-schedule='"+item.movieschedule+"' data-id='"+item.id+"' data-movieSelect='"+item.movieSelect+"'  type='button' class='edit' title='edit'><span class='glyphicon glyphicon-pencil'></span></button>";
 							html +='</div>     ';              
 							html +='<div class="clearOnly"></div>';
 							html +='</div>';
@@ -315,31 +315,7 @@ function StartApp(){
 				});
 			}
 			$('#movieId').val($(this).attr('data-id'));
-			$('#movieImage').val($(this).attr('data-image'));
-			if($(this).attr('data-image') != ''){
-				$('#movieImage').val($(this).attr('data-image'));
-				$('#upload').attr('src',$(this).attr('data-image'));
-			}
-			$('#movieName').val(decodeURIComponent(unescape($(this).attr('data-name'))));
-			if($(this).attr('data-3d') == true){
-				$('#movie3d').attr('checked','checked');
-			}else{
-				$('#movie3d').removeAttr('checked');
-			}
-			$('#movieCast').val(decodeURIComponent(unescape($(this).attr('data-cast'))));
-			$('#movieGenre').val(decodeURIComponent(unescape($(this).attr('data-genre'))));
-			$('#movieDurationHH').val($(this).attr('data-durationHH'));
-			$('#movieDurationMM').val($(this).attr('data-durationMM'));
-			$('#moviePrice').val($(this).attr('data-price'));			
-			$('#movieSynopsis').val(decodeURIComponent(unescape($(this).attr('data-synopsis'))));
-			if($(this).attr('data-upcoming') == true){
-				$('#movieUpcoming').attr('checked','checked');
-				$('.scheduleModel').hide();
-			}else{
-				$('#movieUpcoming').removeAttr('checked');
-				$('.scheduleModel').show();
-			}
-			
+			$('#movieSelect').val($(this).attr('data-movieSelect'));
 			$('#myModal').modal();
 		});
 			
@@ -382,18 +358,7 @@ function StartApp(){
 		$(document.body).on('click', '#addMovies', function() {
 			$('#scheduleList').html('');
 			$('#movieId').val('');
-			$('#movieImage').val('');
-			$('#movieImage').val('');
-			$('#upload').attr('src','./assets/images/icon.jpg');
-			$('#movieName').val('');
-			$('#movie3d').removeAttr('checked');
-			$('#movieCast').val('');
-			$('#movieGenre').val('');
-			$('#movieDurationHH').val('');
-			$('#movieDurationMM').val('');
-			$('#moviePrice').val('');			
-			$('#movieSynopsis').val('');
-			$('#movieUpcoming').removeAttr('checked');
+			$('#movieSelect').val('');
 			$('.scheduleModel').show();
 			$('#myModal').modal();
 		});
