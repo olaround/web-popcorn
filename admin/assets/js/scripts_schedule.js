@@ -1,10 +1,78 @@
 ﻿var cityNameArray = new Array();
 var cinemaNameArray = new Array();
-var pricingArray = new Array();
-var pricingList = '';
+var MoviesArray = new Array();
+var MoviesList = '';
 var AppId = '';
 var AppURL = '';
+var WeekDays = '';
+var WeekCount = 0;
+var WeekOptions = new Array();
+WeekOptions[WeekCount] = new Array();
+WeekOptions[WeekCount]['start'] = '2013-1-1';
+function returnDayWeek(m,d){
+	var time = new Time(2013, m, d);
+						time.firstDayOfWeek = 4;
+						if(WeekDays != time.weekOfCurrentMonth() && time.weekday() == 1){
+							WeekDays = time.weekOfCurrentMonth();
+							//console.log(time.year()+'-'+time.month()+'-'+time.day());
+							WeekOptions[WeekCount]['end'] = time.year()+'-'+time.month()+'-'+time.day();
+							//console.log(WeekDays);
+							//console.log(WeekCount);
+							WeekCount++;
+						}else if(time.weekday() == 2){
+							WeekOptions[WeekCount] = new Array();
+							//console.log(time.year()+'-'+time.month()+'-'+time.day());
+							WeekOptions[WeekCount]['start'] = time.year()+'-'+time.month()+'-'+time.day();
+						}
+}
 function GetApp(){
+	for(var m=1;m<=12;m++){
+		for(var d=1;d<=31;d++){
+			if(m==2){
+				if(new Time(2013).isLeapYear()){
+					if(d <=29){
+						returnDayWeek(m,d);
+					}
+				}else{
+					if(d <=28){
+						
+					}
+				}
+			}else{
+				if(m%2 == 0 && m < 8){
+					if(d <= 30){
+						returnDayWeek(m,d);
+					}
+				}else{
+					if(m >= 8){
+						if(m%2 != 0){
+							if(d <= 30){
+								returnDayWeek(m,d);
+							}
+						}else{
+							if(d <= 31){
+								returnDayWeek(m,d);
+							}
+						}
+					}else if(d <= 31){
+						returnDayWeek(m,d);
+					}
+				}
+			}
+		}
+	}
+	WeekOptions[WeekCount]['end'] = '2013-12-31';
+	var OptionList = '';
+	$.each(WeekOptions,function(index,item){
+		OptionList += '<option value="'+item['start']+'/'+item['end']+'">Week '+(index+1)+' (<b>'+item['start']+'</b> to <b>'+item['end']+'</b>)</option>';
+		//console.log(item['end']);
+	});
+	$('#fromDate').html(OptionList);
+	console.log(OptionList);
+	//console.log(WeekOptions);
+	                            // Monday
+	//time.firstDayOfWeek = 1; 
+	
 	$.getJSON('../app.json', function(data) {
 		AppId = data.id;
 		AppURL = data.url;
@@ -14,6 +82,7 @@ function GetApp(){
 function StartApp(){	
 	var client = new WindowsAzure.MobileServiceClient(AppURL, AppId),
         ScheduleTable = client.getTable('schedule');
+		MoviesTable = client.getTable('movies');
 		CityTable = client.getTable('city');
 		CinemaTable = client.getTable('cinema');
 		PricingTable = client.getTable('pricing');
@@ -86,13 +155,29 @@ function StartApp(){
 				$('.loader').hide();
 			});
 		}
+		function getMovies(cinama_id){
+			var queryMovies = MoviesTable.where({cinema: cinama_id, upcoming: 'false' });
+			MoviesList = '';
+			MoviesList += '<option value="">Select Movie</option>';
+			queryMovies.read().then(function(todoItemsMovies) {
+				$.each(todoItemsMovies,function(index,item){
+								MoviesList += '<option value='+item.id+'>'+item.name+'</option>';					
+								MoviesArray[item.id] = item.name;
+							
+				});
+				$('#movieSelect').html(MoviesList);
+				//alert(pricingList);
+			}, handleError).done(function(){
+				$('.loader').hide();
+			});
+		}
 		
 		//end get city function
 		
 		// createHtmlForMovies
 		function createHtmlForMovies(){
 		
-			var query = ScheduleTable.where({ city: $('#city').val() , cinema: $('#cinema').val() , parent: 0 });
+			var query = ScheduleTable.where({ city: $('#city').val() , cinema: $('#cinema').val(), fromdate: $('#fromDate').val()});
 		  /*var query = todoItemTable.where(function(dated){
 											return this.id <= dated
 											},2);*/
@@ -100,75 +185,16 @@ function StartApp(){
 			query.read().then(function(todoItems) {
 				var listItems = $.map(todoItems, function(item) {
 					console.log(item);
-					var timetypeOptions = '';
-					if(item.timetype == 'AM'){
-						timetypeOptions+= '<select type="text" class="movietimetype">';
-						timetypeOptions+= '<option selected value="AM" selected>AM</option>';
-						timetypeOptions+= '<option value="PM">PM</option>';
-						timetypeOptions+= '</select>';
-					}else{
-						timetypeOptions+= '<select type="text" class="movietimetype">';
-						timetypeOptions+= '<option value="AM">AM</option>';
-						timetypeOptions+= '<option selected value="PM">PM</option>';
-						timetypeOptions+= '</select>';
-					}
-					if(item.images == ''){
-						var img = 'movie-placeholder.jpg';
-					}else{
-						var img = item.images;
-					}
 						var html='';
 							html +='<div class="panel panel-default" data-id="'+item.id+'">';
 							html +='<div class="panel-heading">';
-							if(item.threeD == true){
-								html +='<div class="col-lg-11 movieTitle"> '+item.name+' <span class="label  label-danger">3D</span> </div>';
-							}else{
-								html +='<div class="col-lg-11 movieTitle"> '+item.name+' </div>';
-							}
+							html +='<div class="col-lg-11 movieTitle"> '+MoviesArray[item.movieSelect]+' </div>';
 							html +='<div class="col-lg-1">';
 							html +='<button  class="close"  data-id="'+item.id+'">x</button>';
-							html +="<button data-schedule='"+item.movieschedule+"' data-id='"+item.id+"' data-name='"+item.name+"' data-image='"+item.image+"' data-cast='"+item.cast+"' data-genre='"+item.genre+"' data-synopsis='"+item.synopsis+"' data-3d='"+item.threeD+"' data-price='"+item.price+"' data-durationHH='"+item.durationHH+"' data-durationMM='"+item.durationMM+"' data-upcoming='"+item.upcoming+"' type='button' class='edit' title='edit'><span class='glyphicon glyphicon-pencil'></span></button>";
+							html +="<button data-schedule='"+item.movieschedule+"' data-id='"+item.id+"'  type='button' class='edit' title='edit'><span class='glyphicon glyphicon-pencil'></span></button>";
 							html +='</div>     ';              
 							html +='<div class="clearOnly"></div>';
 							html +='</div>';
-							html +='<div class="panel-body">';
-							html +='<div class="col-lg-2">';
-							html +='<div class="col-lg-12">';
-							if(item.image != ''){
-								html +='<img src="'+item.image+'">';
-							}else{
-								html +='<img src="./assets/images/no.jpg">';
-							}
-							html +='</div>';
-							html +='</div>';
-							html +='<div class="col-lg-8">';
-							html +='<div class="col-lg-2">';
-							html +='<span class="label  label-info">Duration</span>';
-							if(item.durationHH && item.durationMM){
-								html +='<p>'+item.durationHH+':'+item.durationMM+'</p>';
-							}else{
-								html +='<p>-</p>';
-							}
-							html +='</div>';
-							html +='<div class="col-lg-10">';
-							html +='<span class="label  label-info">Genre</span>';
-							html +='<p>'+item.genre+'</p>';
-							html +='</div>';  
-							html +='<div class="col-lg-12">';
-							html +='<span class="label  label-info">Synopsis</span>';
-							html +='<p>'+item.synopsis+'</p>';
-							html +='</div>';    
-							html +='<div class="col-lg-12">';
-							html +='<span class="label  label-info">Cast</span>';
-							html +='<p>'+item.cast+'</p>';
-							html +='</div>';
-							html +='</div>';
-							html +='<div class="col-lg-2">';
-							if(pricingArray[item.price]){
-								html +='<h1 class="pricingText">PKR '+pricingArray[item.price]+'</h1>';
-							}
-							html +='</div>';
-							html +='</div> ';             
 							html +='</div>';
 						return  $(html)														
 				});
@@ -192,7 +218,7 @@ function StartApp(){
 			$('#addMovies').hide();
 			$('#todo-items').hide();
 			$('#fromDate').val('');
-			$('#toDate').val('');
+			$('#movieSelect').val('');
 		});
 		
 		$(document.body).on('click', '.edit', function() {
@@ -206,53 +232,73 @@ function StartApp(){
 						Html +='<div class="col-lg-12">';
 						Html +='<button  class="closeSch">x</button>';
 						Html +=' </div>';
-						Html +='<div class="input-group col-lg-12">';
-						Html +='<span class="label label-info">TIME</span> ';
-						Html +='<input type="text" value="'+value[0]+'" class="form-control time"  />';
+						Html +=' <div style="clear:both;"></div>';
+						Html +='<div class="input-group col-lg-4">';
+						Html +='<span class="label label-info">HH</span> ';
+						Html +='<input maxlength="2" type="text" value="'+value[0]+'" class="form-control timeHH"  />';
 						Html +='</div>';
+						Html +='<div class="input-group col-lg-4">';
+						Html +='<span class="label label-info">MM</span> ';
+						Html +='<input  maxlength="2" type="text" value="'+value[1]+'" class="form-control timeMM"  />';
+						Html +='</div>';
+						Html +='<div class="input-group col-lg-4">';
+						Html +='<span class="label label-info">Type</span> ';
+						Html +='<select type="text" value="'+value[2]+'" class="form-control timeType"  >';
+						if(value[2] == 'AM'){
+							Html +='<option selected="selected" value="AM">AM</option>';
+						}else{
+							Html +='<option value="AM">AM</option>';
+						}
+						if(value[2] == 'PM'){
+							Html +='<option selected="selected" value="PM">PM</option>';
+						}else{
+							Html +='<option value="PM">PM</option>';
+						}
+						Html +='</select>';
+						Html +='</div>';						
 						Html +='<div class="input-group col-lg-12">';
 						Html +='<span class="label label-info">DAYS</span> ';
 						Html +='<div class="table-responsive scheduleList">';
 						Html +='<table class="table  table-condensed">';
 						Html +='<tbody>';
 						Html +='<tr>';
-						if(value[1] == true){
+						if(value[3] == true){
 							Html +='<td><input checked="checked" type="checkbox" class="MON"></td>';
 						}else{
 							Html +='<td><input type="checkbox" class="MON"></td>';
 						}
 						Html +='<td>MON</td>';
-						if(value[2] == true){
+						if(value[4] == true){
 							Html +='<td><input checked="checked" type="checkbox"  class="TUE"></td>';
 						}else{
 							Html +='<td><input type="checkbox"  class="TUE"></td>';
 						}
 						Html +='<td>TUE</td>';
-						if(value[3] == true){
+						if(value[5] == true){
 							Html +='<td><input checked="checked" type="checkbox"  class="WED"></td>';
 						}else{
 							Html +='<td><input type="checkbox"  class="WED"></td>';
 						}
 						Html +=' <td>WED</td>';
-						if(value[4] == true){
+						if(value[6] == true){
 							Html +='<td><input checked="checked" type="checkbox"  class="THU"></td>';
 						}else{
 							Html +='<td><input type="checkbox"  class="THU"></td>';
 						}
 						Html +='<td>THR</td>';
-						if(value[5] == true){
+						if(value[7] == true){
 							Html +='<td><input checked="checked" type="checkbox"  class="FRI"></td>';
 						}else{
 							Html +='<td><input type="checkbox"  class="FRI"></td>';
 						}
 						Html +='<td>FRI</td>';
-						if(value[6] == true){
+						if(value[8] == true){
 							Html +='<td><input checked="checked" type="checkbox"  class="SAT"></td>';
 						}else{
 							Html +='<td><input type="checkbox"  class="SAT"></td>';
 						}
 						Html +='<td>SAT</td>';
-						if(value[7] == true){
+						if(value[9] == true){
 							Html +='<td><input checked="checked" type="checkbox"  class="SUN"></td>';
 						}else{
 							Html +='<td><input type="checkbox"  class="SUN"></td>';
@@ -274,18 +320,18 @@ function StartApp(){
 				$('#movieImage').val($(this).attr('data-image'));
 				$('#upload').attr('src',$(this).attr('data-image'));
 			}
-			$('#movieName').val($(this).attr('data-name'));
+			$('#movieName').val(decodeURIComponent(unescape($(this).attr('data-name'))));
 			if($(this).attr('data-3d') == true){
 				$('#movie3d').attr('checked','checked');
 			}else{
 				$('#movie3d').removeAttr('checked');
 			}
-			$('#movieCast').val($(this).attr('data-cast'));
-			$('#movieGenre').val($(this).attr('data-genre'));
+			$('#movieCast').val(decodeURIComponent(unescape($(this).attr('data-cast'))));
+			$('#movieGenre').val(decodeURIComponent(unescape($(this).attr('data-genre'))));
 			$('#movieDurationHH').val($(this).attr('data-durationHH'));
 			$('#movieDurationMM').val($(this).attr('data-durationMM'));
 			$('#moviePrice').val($(this).attr('data-price'));			
-			$('#movieSynopsis').val($(this).attr('data-synopsis'));
+			$('#movieSynopsis').val(decodeURIComponent(unescape($(this).attr('data-synopsis'))));
 			if($(this).attr('data-upcoming') == true){
 				$('#movieUpcoming').attr('checked','checked');
 				$('.scheduleModel').hide();
@@ -300,16 +346,16 @@ function StartApp(){
 		$(document.body).on('change', '#cinema', function() {
 			if($(this).val() != ''){
 				$('.loader').show();
-				 getPricing($(this).val());
+				 getMovies($(this).val());
 			}
 			$('#fromDate').val('');
-			$('#toDate').val('');
 			$('#addMovies').hide();
 			$('#todo-items').hide();
 		});
 		$(document.body).on('change', '#fromDate', function() {
-			if($('#fromDate').val() != '' && $('#toDate').val() != ''){
+			if($('#fromDate').val() != null){
 				$('.loader').show();
+				console.log('yes');
 				createHtmlForMovies();
 				$('#addMovies').show();
 				$('#todo-items').show();
@@ -318,17 +364,7 @@ function StartApp(){
 				$('#todo-items').hide();
 			}
 		});
-		$(document.body).on('change', '#toDate', function() {
-			if($('#fromDate').val() != '' && $('#toDate').val() != ''){
-				$('.loader').show();
-				createHtmlForMovies();
-				$('#addMovies').show();
-				$('#todo-items').show();
-			}else{
-				$('#addMovies').hide();
-				$('#todo-items').hide();
-			}
-		});
+		
 		$(document.body).on('click', '.close', function() {
 			$('.loader').show();
 			ScheduleTable.del({ id: $(this).attr('data-id') }).then(createHtmlForMovies, handleError).done(function(){
@@ -372,10 +408,22 @@ function StartApp(){
 				Html +='<div class="col-lg-12">';
 				Html +='<button  class="closeSch">x</button>';
 				Html +=' </div>';
-				Html +='<div class="input-group col-lg-12">';
-				Html +='<span class="label label-info">TIME</span> ';
-				Html +='<input type="text" class="form-control time"  />';
+				Html +=' <div style="clear:both;"></div>';
+				Html +='<div class="input-group col-lg-4">';
+				Html +='<span class="label label-info">HH</span> ';
+				Html +='<input maxlength="2" type="text"  class="form-control timeHH"  />';
 				Html +='</div>';
+				Html +='<div class="input-group col-lg-4">';
+				Html +='<span class="label label-info">MM</span> ';
+				Html +='<input  maxlength="2" type="text"  class="form-control timeMM"  />';
+				Html +='</div>';
+				Html +='<div class="input-group col-lg-4">';
+				Html +='<span class="label label-info">Type</span> ';
+				Html +='<select type="text"  class="form-control timeType"  >';
+				Html +='<option value="AM">AM</option>';
+				Html +='<option value="PM">PM</option>';
+				Html +='</select>';
+				Html +='</div>';	
 				Html +='<div class="input-group col-lg-12">';
 				Html +='<span class="label label-info">DAYS</span> ';
 				Html +='<div class="table-responsive scheduleList">';
@@ -412,8 +460,8 @@ function StartApp(){
 			var itemSchedule = new Array();
 			$('#scheduleList').find('li').each(function(index, element) {
 				itemSchedule[index]  = new Array();
-                $(this).find('input').each(function(){
-					if($(this).hasClass('time')){
+                $(this).find('input,select').each(function(){
+					if($(this).hasClass('timeHH') || $(this).hasClass('timeMM') || $(this).hasClass('timeType')){
 						itemSchedule[index].push($(this).val());
 					}else{
 						itemSchedule[index].push($(this).prop('checked'));
@@ -424,21 +472,11 @@ function StartApp(){
 			var cityName = $('#city').val();
 			var cinemaName =$('#cinema').val();
 			var fromdate = $('#fromDate').val();
-			var todate = $('#toDate').val();
-			var movieImage = $('#movieImage').val();
-			var movieName = $('#movieName').val();
-			var movie3d = $('#movie3d').prop('checked');
-			var movieCast = $('#movieCast').val();
-			var movieGenre = $('#movieGenre').val();
-			var movieDurationHH = $('#movieDurationHH').val();
-			var movieDurationMM = $('#movieDurationMM').val();
-			var moviePrice = $('#moviePrice').val();			
-			var movieSynopsis = $('#movieSynopsis').val();
-			var movieUpcoming = $('#movieUpcoming').prop('checked');
+			var movieSelect = $('#movieSelect').val();
 			var MovieSchedules = JSON.stringify(itemSchedule);
+			console.log(MovieSchedules);
 			
-			
-			if(movieName == ''){
+			if(movieSelect == ''){
 				alert('Please enter movie Name');
 			}else{
 				if($('#movieId').val() == ''){
@@ -446,20 +484,8 @@ function StartApp(){
 							city: cityName,
 							cinema: cinemaName,
 							fromdate: fromdate,
-							todate: todate,
-							image: movieImage,
-							threeD: movie3d,
-							price: moviePrice,
-							durationHH: movieDurationHH,
-							durationMM: movieDurationMM,
-							synopsis: movieSynopsis,
-							genre : movieGenre,
-							images: movieImage,				
-							name: movieName,
-							cast: movieCast,
-							upcoming: movieUpcoming,
-							movieschedule:MovieSchedules,
-							parent: 0					
+							movieSelect: movieSelect,
+							movieschedule:MovieSchedules
 						};
 						ScheduleTable.insert(theNewRow).then(createHtmlForMovies, handleError).then(function(){
 							$('#myModal').modal('hide');
@@ -472,20 +498,8 @@ function StartApp(){
 							city: cityName,
 							cinema: cinemaName,
 							fromdate: fromdate,
-							todate: todate,
-							image: movieImage,
-							threeD: movie3d,
-							price: moviePrice,
-							durationHH: movieDurationHH,
-							durationMM: movieDurationMM,
-							synopsis: movieSynopsis,
-							genre : movieGenre,
-							images: movieImage,				
-							name: movieName,
-							cast: movieCast,
-							upcoming: movieUpcoming,
-							movieschedule:MovieSchedules,
-							parent: 0					
+							movieSelect: movieSelect,
+							movieschedule:MovieSchedules				
 						};
 						ScheduleTable.update(theNewRow).then(createHtmlForMovies, handleError).then(function(){
 							$('#myModal').modal('hide');
@@ -498,35 +512,5 @@ function StartApp(){
     });
 		// end event listener
 		
-		$(function(){
-			var btnUpload=$('#upload');
-			var status=$('#status');
-			var maxwdith=400;
-			var maxheight=200;
-			new AjaxUpload(btnUpload, {
-				action: 'upload-file.php',
-				name: 'uploadfile',
-				onSubmit: function(file, ext){
-					/* if (! (ext && /^(jpg|png|jpeg|gif)$/.test(ext))){ 
-						// extension is not allowed 
-						status.text('Only JPG, PNG or GIF files are allowed');
-						return false;
-					}*/
-					
-					status.text('Uploading...');
-				},
-				onComplete: function(file, response){
-					//On completion clear the status
-					status.text('');
-					//Add uploaded file to list
-					var res = response.split('|');
-					if(res[0]==="success"){
-						btnUpload.attr('src',res[1]);
-						$('#movieImage').val(res[1]);
-					} else{
-						//$('<li></li>').appendTo('#files').text(file).addClass('error');
-					}
-				}
-			});
-		})
+		$(function(){})
 }
