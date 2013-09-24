@@ -144,7 +144,7 @@ function StartApp(){
 							if(item.image != ''){
 								html +='<img src="'+item.image+'">';
 							}else{
-								html +='<img src="./assets/images/no.jpg">';
+								html +='<img src="./assets/images/no.jpg" width="140" height="209">';
 							}
 							html +='</div>';
 							html +='</div>';
@@ -239,10 +239,15 @@ function StartApp(){
 		});
 		
 		$(document.body).on('click', '.close', function() {
-			$('.loader').show();
-			MoviesTable.del({ id: $(this).attr('data-id') }).then(createHtmlForMovies, handleError).done(function(){
-				$('.loader').hide();
-			});
+			if($(this).attr('data-id')){
+			var result = confirm("Are u sure to want to delete ?");
+			if (result==true) {
+				$('.loader').show();
+				MoviesTable.del({ id: $(this).attr('data-id') }).then(createHtmlForMovies, handleError).done(function(){
+					$('.loader').hide();
+				});
+			}}
+			
 		});
 		$(document.body).on('click', '.closeSch', function() {
 			$(this).parent().parent('li').remove();

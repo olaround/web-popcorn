@@ -366,10 +366,14 @@ function StartApp(){
 		});
 		
 		$(document.body).on('click', '.close', function() {
-			$('.loader').show();
+			if($(this).attr('data-id')){
+			var result = confirm("Are u sure to want to delete ?");
+			if (result==true) {
+				$('.loader').show();
 			ScheduleTable.del({ id: $(this).attr('data-id') }).then(createHtmlForMovies, handleError).done(function(){
 				$('.loader').hide();
 			});
+			}}
 		});
 		$(document.body).on('click', '.closeSch', function() {
 			$(this).parent().parent('li').remove();
