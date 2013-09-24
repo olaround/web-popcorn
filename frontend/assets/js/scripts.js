@@ -136,7 +136,7 @@ function StartApp(){
 					Html += "<img class='listingItem' data-upcoming='"+item.upcoming+"'  data-image='"+item.image+"' data-sch='"+item.movieschedule+"' data-durHH='"+item.durationHH+"' data-durMM='"+item.durationMM+"' data-name='"+item.name+"' data-cast='"+item.cast+"' data-synopsis='"+item.synopsis+"' data-image='"+item.image+"' data-catagory='"+item.genre+"' data-date='"+item.durationHH+"' data-price='"+item.price+"' src='"+item.image+"' alt='"+item.name+"'>";
 					Html += '<div class="movie-details">';
 					Html += "<h1 class='listingItem' data-upcoming='"+item.upcoming+"'  data-image='"+item.image+"' data-sch='"+item.movieschedule+"' data-durHH='"+item.durationHH+"' data-durMM='"+item.durationMM+"' data-name='"+item.name+"' data-cast='"+item.cast+"' data-synopsis='"+item.synopsis+"' data-image='"+item.image+"' data-catagory='"+item.genre+"' data-date='"+item.durationHH+"' data-price='"+item.price+"'>"+item.name+"</h1>";
-					Html += '<div><span>Action, Thirller</span><span> | </span><span>'+item.durationHH+'hr '+item.durationMM+' min</span></div>';
+					Html += '<div><span>'+item.genre+'</span><span> | </span><span>'+item.durationHH+'hr '+item.durationMM+' min</span></div>';
 					Html += '<div class="synopsis-container">';
 					Html += '<h2>Synopsis:</h2>';
 					Html += ' <p>'+item.synopsis+'</p>';
@@ -273,12 +273,12 @@ function StartApp(){
 					
 					$('.MoviePrice').html('PKR '+pricingArray[$(this).attr('data-price')]);
 					$('.MovieImg').attr('src',$(this).attr('data-image'));
-					$('.Dur').html($(this).attr('data-durHH')+'hr '+$(this).attr('data-durMM')+'min')
-					$('.MovieName').html($(this).attr('data-name'))
-					$('.MovieCat').html($(this).attr('data-catagory'))
+					$('.Dur').html($(this).attr('data-durHH')+'hr '+$(this).attr('data-durMM')+'min');
+					$('.MovieName').html($(this).attr('data-name'));
+					$('.MovieCat').html($(this).attr('data-catagory'));
 					//$('.MovieSchDate').html($(this).attr('data-date'))
 					//$('.MovieSch').attr('src',$(this).attr('data-image'))
-					$('.MovieCast').html($(this).attr('data-cast'))
+					$('.MovieCast').html($(this).attr('data-cast'));
 					$('.MovieSynopsis').html($(this).attr('data-synopsis'));
 					$('.modal').removeClass('hideMe');
 					$('#alpha-layer').removeClass('hideMe');
