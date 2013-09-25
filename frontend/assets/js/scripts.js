@@ -363,6 +363,11 @@ function StartApp(){
 							$(this).addClass('active');
 							$('#week-days').slideDown();
 							$('.arrow-down').show();
+							if($('.movieListingBottom .movie-detail-widget').length != 0){								
+								$('.soon').hide();
+							}else{
+								$('.soon').show();
+							}
 							
 					}else{
 							$('.movie-postersUp').removeClass('hideMe');
