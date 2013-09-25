@@ -43,18 +43,17 @@
 <ul class="movie-postersUp hideMe">
  
 </ul>
-
-<ol id="week-days">
-    <li>Weekly <span>Schedule</span></li>
-    <li>16 Sep <br>- <br>22 Sep</li>
-    <li  data-pos="6">Sat</li>
-    <li data-pos="0">Sun</li>
-    <li  data-pos="1">Mon</li>
-    <li  data-pos="2">Tue</li>
-    <li  data-pos="3">Wed</li>
-    <li  data-pos="4">Thu</li>
-    <li  data-pos="5">Fri</li>
-</ol>
+    <ol id="week-days">
+        <li>Weekly <span>Schedule</span></li>
+        <li><span  class="dayofwekS">16 Sep</span> <br>- <br><span  class="dayofwekE">22 Sep</span></li>
+            <li  data-pos="0">Fri</li>
+            <li  data-pos="1">Sat</li>
+            <li  data-pos="2">Sun</li>
+            <li  data-pos="3">Mon</li>
+            <li  data-pos="4">Tue</li>
+            <li  data-pos="5">Wed</li>
+            <li  data-pos="6">Thu</li>
+    </ol>
 <div style="clear:both;"></div>
 <div id="arrow-container"><div class="arrow-down"></div></div>
 <div style="clear:both;"></div>
@@ -66,9 +65,10 @@
 <div class="modal hideMe">
 <button class="close-btn">x</button>
   <div class="modal-left"><img  class="MovieImg" src="">
+  						  <a href="" class="movieTrailer" target="_blank"></a>
     <div class="movie-price">
       <div class="price MoviePrice">PKR 500.00</div>
-      <button>Book Now</button>
+      <a href="http://thearena.com.pk/membership.php" target="_blank"><button>Book Now</button></a>
     </div>
   </div>
   <div class="modal-right movie-details">
@@ -79,7 +79,7 @@
         <thead>
           <tr>
             <th>Weekly Schedule</th>
-            <th  class="MovieSchDate">16 Sep - 22 Sep</th>
+            <th  class="MovieSchDate"><span  class="dayofwekS colorblack">16 Sep</span> - <span  class="dayofwekE colorblack">22 Sep</span></th>
           </tr>
         </thead>
         <tbody   class="MovieSch">
@@ -97,10 +97,12 @@
     </div>
   </div>
 </div>
+<div class="soon"></div>
 	<div class="preLoader">
     </div>
     <script src="./assets/js/jquery-2.0.3.min.js"></script>
     <script src='./assets/js/MobileServices.Web-1.0.0.min.js'></script>
+    <script src='./assets/js/time.js'></script>
     <script src="assets/js/scripts.js"></script>
     
   </body>
