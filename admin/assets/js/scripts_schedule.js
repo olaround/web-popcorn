@@ -21,22 +21,22 @@ function GetApp(){
 	today.setDate(today.getDate() + daysToSubtract[today.getDay()]);
 	
 	daysPointer.push(today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate());
-	daysPointerDisp.push(moment(today).format('dddd, MMMM DD, YYYY'));
+	daysPointerDisp.push(moment(today).format('dddd, DD MMM YY'));
 	
 	today.setDate(today.getDate() + 6);
 	
 	daysPointer.push(today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate());
-	daysPointerDisp.push(moment(today).format('dddd, MMMM DD, YYYY'));
+	daysPointerDisp.push(moment(today).format('dddd, DD MMM YY'));
 	
 	today.setDate(today.getDate() + 1);
 	
 	daysPointer.push(today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate());
-	daysPointerDisp.push(moment(today).format('dddd, MMMM DD, YYYY'));
+	daysPointerDisp.push(moment(today).format('dddd, DD MMM YY'));
 	
 	today.setDate(today.getDate() + 6);
 	
 	daysPointer.push(today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate());
-	daysPointerDisp.push(moment(today).format('dddd, MMMM DD, YYYY'));
+	daysPointerDisp.push(moment(today).format('dddd, DD MMM YY'));
 	
 	var appendHtml = '';
 	var appendHtmlDisp = '';
@@ -44,7 +44,7 @@ function GetApp(){
 	$.each(daysPointer,function(index,items){
 		if(index%2 == 0){
 			appendHtml += items+'/';
-			appendHtmlDisp += daysPointerDisp[index]+' to ';
+			appendHtmlDisp += daysPointerDisp[index]+'&nbsp; &mdash; &nbsp;';
 		}else{
 			appendHtml += items;
 			appendHtmlDisp += daysPointerDisp[index];
