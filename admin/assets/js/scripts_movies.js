@@ -134,7 +134,7 @@ function StartApp(){
 							}
 							html +='<div class="col-lg-1">';
 							html +='<button  class="close"  data-id="'+item.id+'">x</button>';
-							html +="<button data-schedule='"+item.movieschedule+"' data-movieTralier='"+item.movieTralier+"' data-id='"+item.id+"' data-name='"+encodeURIComponent(escape(item.name))+"' data-image='"+item.image+"' data-cast='"+encodeURIComponent(escape(item.cast))+"' data-genre='"+encodeURIComponent(escape(item.genre))+"' data-synopsis='"+encodeURIComponent(escape(item.synopsis))+"' data-3d='"+item.threeD+"' data-price='"+item.price+"' data-durationHH='"+item.durationHH+"' data-durationMM='"+item.durationMM+"' data-upcoming='"+item.upcoming+"' type='button' class='edit' title='edit'><span class='glyphicon glyphicon-pencil'></span></button>";
+							html +="<button data-schedule='"+item.movieschedule+"' data-movieTralier='"+encodeURIComponent(escape(item.movieTralier))+"' data-id='"+item.id+"' data-name='"+encodeURIComponent(escape(item.name))+"' data-image='"+item.image+"' data-cast='"+encodeURIComponent(escape(item.cast))+"' data-genre='"+encodeURIComponent(escape(item.genre))+"' data-synopsis='"+encodeURIComponent(escape(item.synopsis))+"' data-3d='"+item.threeD+"' data-price='"+item.price+"' data-durationHH='"+item.durationHH+"' data-durationMM='"+item.durationMM+"' data-upcoming='"+item.upcoming+"' type='button' class='edit' title='edit'><span class='glyphicon glyphicon-pencil'></span></button>";
 							html +='</div>     ';              
 							html +='<div class="clearOnly"></div>';
 							html +='</div>';
