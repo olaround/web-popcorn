@@ -9,97 +9,55 @@ var WeekCount = 0;
 var WeekOptions = new Array();
 WeekOptions[WeekCount] = new Array();
 WeekOptions[WeekCount]['start'] = '2013-1-1';
-function returnDayWeek(m,d){
-	var time = new Time(2013, m, d);
-						time.firstDayOfWeek = 4;
-						if(WeekDays != time.weekOfCurrentMonth() && time.weekday() == 1){
-							WeekDays = time.weekOfCurrentMonth();
-							//console.log(time.year()+'-'+time.month()+'-'+time.day());
-							WeekOptions[WeekCount]['end'] = time.year()+'-'+time.month()+'-'+time.day();
-							//console.log(WeekDays);
-							//console.log(WeekCount);
-							WeekCount++;
-						}else if(time.weekday() == 2){
-							WeekOptions[WeekCount] = new Array();
-							//console.log(time.year()+'-'+time.month()+'-'+time.day());
-							WeekOptions[WeekCount]['start'] = time.year()+'-'+time.month()+'-'+time.day();
-						}
-}
+var daysToSubtract = [-2,-3,-4,-5,-6,0,-1];
+var daysPointer = [];
+var daysPointerDisp = [];
+
 function GetApp(){
-	for(var m=1;m<=12;m++){
-		for(var d=1;d<=31;d++){
-			if(m==2){
-				if(new Time(2013).isLeapYear()){
-					if(d <=29){
-						returnDayWeek(m,d);
-					}
-				}else{
-					if(d <=28){
-						
-					}
-				}
-			}else{
-				if(m%2 == 0 && m < 8){
-					if(d <= 30){
-						returnDayWeek(m,d);
-					}
-				}else{
-					if(m >= 8){
-						if(m%2 != 0){
-							if(d <= 30){
-								returnDayWeek(m,d);
-							}
-						}else{
-							if(d <= 31){
-								returnDayWeek(m,d);
-							}
-						}
-					}else if(d <= 31){
-						returnDayWeek(m,d);
-					}
-				}
-			}
-		}
-	}
-	WeekOptions[WeekCount]['end'] = '2013-12-31';
+	
 	var OptionList = '';
-	var DatBaix = new Date();
-	var numberOfDaysToAdd = 7;
-	DatBaix.setDate(DatBaix.getDate() + numberOfDaysToAdd);
-	var tDay2  = DatBaix.getDate();
-	var tMonth2  = DatBaix.getMonth()+1;
-	var tYear2  = DatBaix.getFullYear();
+	var today =new Date();
+	//var lastFriday = today.getDate() + daysToSubtract[currentDate];
+	today.setDate(today.getDate() + daysToSubtract[today.getDay()]);
 	
-	var DatBaix3 = new Date();
-	var numberOfDaysToAdd3 = 7;
-	DatBaix3.setDate(DatBaix3.getDate() - numberOfDaysToAdd3);
-	var tDay3  = DatBaix3.getDate();
-	var tMonth3  = DatBaix3.getMonth()+1;
-	var tYear3  = DatBaix3.getFullYear();
+	daysPointer.push(today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate());
+	daysPointerDisp.push(moment(today).format('dddd, MMMM DD, YYYY'));
 	
-	$.each(WeekOptions,function(index,item){
-		var starttime = item['start'];
-		var Dstarttime = starttime.split('-');
-		var endtime = item['end'];
-		var Dendtime = endtime.split('-');
-		//console.log(Dstarttime);
-		//console.log(Dendtime);
-		var tDay  = new Date().getDate();
-		var tMonth  = new Date().getMonth()+1;
-		var tYear  = new Date().getFullYear();
-		
-		
-		if(tMonth >= Dstarttime[1] && tYear >= Dstarttime[0]  && tMonth <= Dendtime[1] && tYear <= Dendtime[0]){
-			OptionList += '<option value="'+item['start']+'/'+item['end']+'">Week '+(index+1)+' (<b>'+item['start']+'</b> to <b>'+item['end']+'</b>)</option>';
+	today.setDate(today.getDate() + 6);
+	
+	daysPointer.push(today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate());
+	daysPointerDisp.push(moment(today).format('dddd, MMMM DD, YYYY'));
+	
+	today.setDate(today.getDate() + 1);
+	
+	daysPointer.push(today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate());
+	daysPointerDisp.push(moment(today).format('dddd, MMMM DD, YYYY'));
+	
+	today.setDate(today.getDate() + 6);
+	
+	daysPointer.push(today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate());
+	daysPointerDisp.push(moment(today).format('dddd, MMMM DD, YYYY'));
+	
+	var appendHtml = '';
+	var appendHtmlDisp = '';
+	var OptionList = '';
+	$.each(daysPointer,function(index,items){
+		if(index%2 == 0){
+			appendHtml += items+'/';
+			appendHtmlDisp += daysPointerDisp[index]+' to ';
+		}else{
+			appendHtml += items;
+			appendHtmlDisp += daysPointerDisp[index];
+			OptionList += '<option value="'+appendHtml+'">'+appendHtmlDisp+'</option>';
+			appendHtml = '';
+			appendHtmlDisp = '';
 		}
-		if(tMonth2 >= Dstarttime[1] && tYear2 <= Dstarttime[0] && tMonth2 <= Dendtime[1] && tYear2 <= Dendtime[0]){
-			OptionList += '<option value="'+item['start']+'/'+item['end']+'">Week '+(index+1)+' (<b>'+item['start']+'</b> to <b>'+item['end']+'</b>)</option>';
-		}
-		if(tMonth3 >= Dstarttime[1] && tYear3 <= Dstarttime[0] && tMonth3 <= Dendtime[1] && tYear3 <= Dendtime[0]){
-			OptionList += '<option value="'+item['start']+'/'+item['end']+'">Week '+(index+1)+' (<b>'+item['start']+'</b> to <b>'+item['end']+'</b>)</option>';
-		}
-		//console.log(item['end']);
 	});
+	/*console.log(daysPointer);
+	console.log(OptionList);
+	return true;
+		//console.log(item['end']);*/
+	
 	$('#fromDate').html(OptionList);
 	console.log(OptionList);
 	//console.log(WeekOptions);
