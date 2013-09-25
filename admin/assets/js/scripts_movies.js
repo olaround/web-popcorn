@@ -134,7 +134,7 @@ function StartApp(){
 							}
 							html +='<div class="col-lg-1">';
 							html +='<button  class="close"  data-id="'+item.id+'">x</button>';
-							html +="<button data-schedule='"+item.movieschedule+"' data-id='"+item.id+"' data-name='"+encodeURIComponent(escape(item.name))+"' data-image='"+item.image+"' data-cast='"+encodeURIComponent(escape(item.cast))+"' data-genre='"+encodeURIComponent(escape(item.genre))+"' data-synopsis='"+encodeURIComponent(escape(item.synopsis))+"' data-3d='"+item.threeD+"' data-price='"+item.price+"' data-durationHH='"+item.durationHH+"' data-durationMM='"+item.durationMM+"' data-upcoming='"+item.upcoming+"' type='button' class='edit' title='edit'><span class='glyphicon glyphicon-pencil'></span></button>";
+							html +="<button data-schedule='"+item.movieschedule+"' data-movieTralier='"+item.movieTralier+"' data-id='"+item.id+"' data-name='"+encodeURIComponent(escape(item.name))+"' data-image='"+item.image+"' data-cast='"+encodeURIComponent(escape(item.cast))+"' data-genre='"+encodeURIComponent(escape(item.genre))+"' data-synopsis='"+encodeURIComponent(escape(item.synopsis))+"' data-3d='"+item.threeD+"' data-price='"+item.price+"' data-durationHH='"+item.durationHH+"' data-durationMM='"+item.durationMM+"' data-upcoming='"+item.upcoming+"' type='button' class='edit' title='edit'><span class='glyphicon glyphicon-pencil'></span></button>";
 							html +='</div>     ';              
 							html +='<div class="clearOnly"></div>';
 							html +='</div>';
@@ -142,9 +142,20 @@ function StartApp(){
 							html +='<div class="col-lg-2">';
 							html +='<div class="col-lg-12">';
 							if(item.image != ''){
-								html +='<img src="'+item.image+'">';
+								if(item.movieTralier != '' && item.movieTralier != null){
+									html +='<a href="'+item.movieTralier+'" target="_blank"><img src="'+item.image+'"  width="140" height="209">';
+									html +='<img src="assets/images/plays.png" class="iconPlay"></a>';
+								}else{
+									html +='<img src="'+item.image+'"  width="140" height="209">';
+								}
 							}else{
-								html +='<img src="./assets/images/no.jpg" width="140" height="209">';
+								if(item.movieTralier != '' && item.movieTralier != null){
+									html +='<a href="'+item.movieTralier+'" target="_blank"><img src="./assets/images/no.jpg" width="140" height="209">';
+									html +='<img src="assets/images/plays.png" class="iconPlay"></a>';
+								}else{
+									html +='<img src="./assets/images/no.jpg" width="140" height="209">';
+								}
+								
 							}
 							html +='</div>';
 							html +='</div>';
@@ -217,6 +228,8 @@ function StartApp(){
 			$('#movieDurationMM').val($(this).attr('data-durationMM'));
 			$('#moviePrice').val($(this).attr('data-price'));			
 			$('#movieSynopsis').val(decodeURIComponent(unescape($(this).attr('data-synopsis'))));
+			$('#movieTralier').val(decodeURIComponent(unescape($(this).attr('data-movieTralier'))));
+			
 			if($(this).attr('data-upcoming') == 'true'){
 				
 				$('#movieUpcoming').attr('checked','checked');
@@ -240,7 +253,7 @@ function StartApp(){
 		
 		$(document.body).on('click', '.close', function() {
 			if($(this).attr('data-id')){
-			var result = confirm("Are u sure to want to delete ?");
+			var result = confirm("You are about to delete this item, all associated data will de deleted. Click OK to continue.");
 			if (result==true) {
 				$('.loader').show();
 				MoviesTable.del({ id: $(this).attr('data-id') }).then(createHtmlForMovies, handleError).done(function(){
@@ -266,6 +279,7 @@ function StartApp(){
 			$('#movieDurationMM').val('');
 			$('#moviePrice').val('');			
 			$('#movieSynopsis').val('');
+			$('#movieTralier').val('');
 			$('#movieUpcoming').removeAttr('checked');
 			$('#myModal').modal();
 		});
@@ -283,6 +297,7 @@ function StartApp(){
 			var movieDurationMM = $('#movieDurationMM').val();
 			var moviePrice = $('#moviePrice').val();			
 			var movieSynopsis = $('#movieSynopsis').val();
+			var movieTralier = $('#movieTralier').val();
 			var movieUpcoming = $('#movieUpcoming').prop('checked');
 			
 			if(movieName == ''){
@@ -302,6 +317,7 @@ function StartApp(){
 							images: movieImage,				
 							name: movieName,
 							cast: movieCast,
+							movieTralier: movieTralier,
 							upcoming: movieUpcoming,
 							parent: 0					
 						};
@@ -325,6 +341,7 @@ function StartApp(){
 							images: movieImage,				
 							name: movieName,
 							cast: movieCast,
+							movieTralier: movieTralier,
 							upcoming: movieUpcoming,
 							parent: 0					
 						};

@@ -311,18 +311,20 @@ img[alt="Arena Logo"] {
 
 .movie-price {
     float: left;
-    width: 170px;
-    margin-left: 25px;
-    text-align: center;
+	width: 162px;
+	margin-left: 0px;
+	text-align: center;
 }
 
 .movie-price .price {
-    margin-top: 62px;
+   margin-top: 62px;
     margin-bottom: 5px;
     color: #dbdbdb;
     font-size: 12px;
 }
-
+.marginLeftMoviePrice{
+	margin-left: 37px;
+}
 .movie-price button {
     font-weight: 700;
     -webkit-border-radius: 2px;
@@ -373,7 +375,7 @@ img[alt="Arena Logo"] {
 }
 
 .modal-left{
-	width: 200px;
+	width: 177px;
 }
 
 .modal-right{
@@ -382,7 +384,6 @@ img[alt="Arena Logo"] {
 
 .modal-left img{
 	border: 3px solid #363a3d;
-	width:194px;
 }
 
 table{
@@ -419,4 +420,18 @@ tbody{
 	color: #dbdbdb;
 	font-weight: 400;
 	font-size:15px;
+}
+.movieTrailer{
+	background: url(../../../admin/assets/images/plays.png) scroll 47px 78px no-repeat;
+	width: 140px;
+	height: 209px;
+	display: block;
+	position: absolute;
+	left: 20px;
+	top: 20px;
+}
+.soon{width:100%; height:300px; background:url(../images/soon.jpg) center no-repeat #2d2f31; display:none;
+}
+.colorblack{
+	color:black !important;
 }
