@@ -68,7 +68,7 @@ function StartApp(){
 		
 		$(document.body).on('click', '.close', function() {
 			if($(this).attr('data-id')){
-			var result = confirm("Are u sure to want to delete ?");
+			var result = confirm("You are about to delete this item, all associated data will de deleted. Click OK to continue.");
 			if (result==true) {
 				$('.loader').show();
 			CityTable.del({ id: $(this).attr('data-id') }).then(createHtmlForCities, handleError).done(function(){

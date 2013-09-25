@@ -63,8 +63,41 @@ function GetApp(){
 	}
 	WeekOptions[WeekCount]['end'] = '2013-12-31';
 	var OptionList = '';
+	var DatBaix = new Date();
+	var numberOfDaysToAdd = 7;
+	DatBaix.setDate(DatBaix.getDate() + numberOfDaysToAdd);
+	var tDay2  = DatBaix.getDate();
+	var tMonth2  = DatBaix.getMonth()+1;
+	var tYear2  = DatBaix.getFullYear();
+	
+	var DatBaix3 = new Date();
+	var numberOfDaysToAdd3 = 7;
+	DatBaix3.setDate(DatBaix3.getDate() - numberOfDaysToAdd3);
+	var tDay3  = DatBaix3.getDate();
+	var tMonth3  = DatBaix3.getMonth()+1;
+	var tYear3  = DatBaix3.getFullYear();
+	
 	$.each(WeekOptions,function(index,item){
-		OptionList += '<option value="'+item['start']+'/'+item['end']+'">Week '+(index+1)+' (<b>'+item['start']+'</b> to <b>'+item['end']+'</b>)</option>';
+		var starttime = item['start'];
+		var Dstarttime = starttime.split('-');
+		var endtime = item['end'];
+		var Dendtime = endtime.split('-');
+		//console.log(Dstarttime);
+		//console.log(Dendtime);
+		var tDay  = new Date().getDate();
+		var tMonth  = new Date().getMonth()+1;
+		var tYear  = new Date().getFullYear();
+		
+		
+		if(tMonth >= Dstarttime[1] && tYear >= Dstarttime[0]  && tMonth <= Dendtime[1] && tYear <= Dendtime[0]){
+			OptionList += '<option value="'+item['start']+'/'+item['end']+'">Week '+(index+1)+' (<b>'+item['start']+'</b> to <b>'+item['end']+'</b>)</option>';
+		}
+		if(tMonth2 >= Dstarttime[1] && tYear2 <= Dstarttime[0] && tMonth2 <= Dendtime[1] && tYear2 <= Dendtime[0]){
+			OptionList += '<option value="'+item['start']+'/'+item['end']+'">Week '+(index+1)+' (<b>'+item['start']+'</b> to <b>'+item['end']+'</b>)</option>';
+		}
+		if(tMonth3 >= Dstarttime[1] && tYear3 <= Dstarttime[0] && tMonth3 <= Dendtime[1] && tYear3 <= Dendtime[0]){
+			OptionList += '<option value="'+item['start']+'/'+item['end']+'">Week '+(index+1)+' (<b>'+item['start']+'</b> to <b>'+item['end']+'</b>)</option>';
+		}
 		//console.log(item['end']);
 	});
 	$('#fromDate').html(OptionList);
@@ -343,7 +376,7 @@ function StartApp(){
 		
 		$(document.body).on('click', '.close', function() {
 			if($(this).attr('data-id')){
-			var result = confirm("Are u sure to want to delete ?");
+			var result = confirm("You are about to delete this item, all associated data will de deleted. Click OK to continue.");
 			if (result==true) {
 				$('.loader').show();
 			ScheduleTable.del({ id: $(this).attr('data-id') }).then(createHtmlForMovies, handleError).done(function(){

@@ -29,3 +29,10 @@ body {
 	color:white;
 	z-index:9999;
 }
+.iconPlay{
+	position: relative;
+	left: 45px;
+	top: -136px;
+	display: inline-block;
+	width: 51px;
+}
