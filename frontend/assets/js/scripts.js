@@ -141,6 +141,9 @@ function StartApp(){
 			$.each(MoviesArray,function(index,item){
 				if(item){
 				var dayOWeek  = new Date().getDay()+2;
+				if(dayOWeek >= 7 ){
+						dayOWeek = 0;
+					}
 				//dayOWeek = 0;
 				
 				console.log(dayOWeek);
@@ -281,7 +284,11 @@ function StartApp(){
 				$('.preLoader').fadeOut();
 				}else{
 					var dayOWeek  = new Date().getDay()+2;
+					if(dayOWeek >= 7 ){
+						dayOWeek = 0;
+					}
 					//dayOWeek = 0;
+					//alert(dayOWeek);return true;
 					$('#week-days li:nth-child('+daysOFWeekLiPos[dayOWeek]+')').addClass('active');
 					$('.arrow-down').css('left',daysOFWeekAnimation[dayOWeek]);
 					$('.preLoader').fadeOut();
@@ -312,6 +319,11 @@ function StartApp(){
 				}
 			});
 			$(".mainContUp").addClass('hideMe');
+			/*$('.images_container img').hover(function(){
+					$(this).animate({width:$(this).width() + 20 + 'px',height:$(this).height() + 20 + 'px',left: '-10px',top: '-10px'});
+			},function(){				
+					$(this).animate({width:$(this).width() - 20 + 'px',height:$(this).height() - 20 + 'px',left: '0',top: '0'});
+			});*/
 		}
 		
 		//end get city function
@@ -470,7 +482,5 @@ function StartApp(){
 		
 		// end event listener
 		
-		$(function(){
-			
-		})
+		
 }
