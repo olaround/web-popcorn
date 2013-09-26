@@ -15,8 +15,8 @@ if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $new_file_name)) {
 	$resizeObj = new resize($new_file_name);
 
 	// *** 2) Resize image (options: exact, portrait, landscape, auto, crop)
-	$resizeObj -> resizeImage(140, 209, 'auto');
-
+	//$resizeObj -> resizeImage(140, 209, 'auto');
+	$resizeObj -> resizeImage(196, 290, 'auto');
 	// *** 3) Save image
 	$resizeObj -> saveImage($new_file_name, 100);
 	
