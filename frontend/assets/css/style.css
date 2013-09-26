@@ -277,13 +277,13 @@ img[alt="Arena Logo"] {
 .movie-detail-widget img {
     float: left;
     border: 2px solid #363a3d;
-    width: 107px;
+    width: 125px;
     height: auto;
 }
 
 .movie-details {
     float: left;
-    margin-left: 25px;
+    margin-left: 46px;
     width: 405px;
     font-weight: 600;
 }
@@ -317,13 +317,29 @@ img[alt="Arena Logo"] {
 }
 
 .movie-price .price {
-   margin-top: 62px;
+   margin-top: 47px;
     margin-bottom: 5px;
     color: #dbdbdb;
-    font-size: 12px;
+    font-size: 15px;
 }
 .marginLeftMoviePrice{
-	margin-left: 37px;
+	margin-left: 18px;
+}
+.overwriteMargin{
+	margin-left: 26px;
+}
+.overwriteMarginTop{
+	margin-top: -43px;
+	margin-left: 19px;
+}
+.movieListingBottomUp{
+	margin-top: -25px;
+}
+.movie-postersUp li img,.movieListingBottomUp img,.movieListingBottomUp .listingItem{
+	cursor:auto !important;
+}
+.tralier{
+	background:chocolate;
 }
 .movie-price button {
     font-weight: 700;
@@ -331,10 +347,12 @@ img[alt="Arena Logo"] {
     -moz-border-radius: 2px;
     border-radius: 2px;
     padding: 2px 15px;
-    margin-bottom: 60px;
+    margin-bottom: 15px;
     -moz-box-shadow: 0px 1px 1px #282a2c;
     -webkit-box-shadow: 0px 1px 1px #282a2c;
     box-shadow: 0px 1px 1px #282a2c;
+}
+.uptralier{margin-top: 36px;
 }
 .hideMe{
 	display:none !important;
@@ -359,6 +377,7 @@ img[alt="Arena Logo"] {
 	border: 1px solid #3f4649;
 	padding:18px;
 	width:722px;
+	padding-right: 5px;
 }
 
 .close-btn{
@@ -368,6 +387,7 @@ img[alt="Arena Logo"] {
 	-webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
+	padding-top: 0px;
 }
 
 .modal-left, .modal-right{
@@ -376,6 +396,7 @@ img[alt="Arena Logo"] {
 
 .modal-left{
 	width: 177px;
+	padding-top: 3px;
 }
 
 .modal-right{

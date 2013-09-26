@@ -177,17 +177,18 @@ function StartApp(){
 		function createHtmlForPage(){
 			$('.movie-posters').html('');
 			$('.movieListingBottom').html('');
-			//console.log(MoviesArray);
+			console.log(MoviesArray);
 			var DayDataCount = 0;
+			console.log(MoviesArray);
 			if(MoviesArray != ''){
 			$.each(MoviesArray,function(index,item){
-				if(item && item.movieschedule){
-					
-				var dayOWeek  = new Date().getDay();
-				dayOWeek = 0;
+				if(item){
+				var dayOWeek  = new Date().getDay()+2;
+				//dayOWeek = 0;
 				
 				console.log(dayOWeek);
 				//return true;
+				if(item.movieschedule){
 				var itemSchedule = JSON.parse(item.movieschedule);
 				var days = '&nbsp;';
 				var displayItem = 'hideMe';
@@ -249,16 +250,31 @@ function StartApp(){
 					}
 					$('#week-days li:nth-child('+daysOFWeekLiPos[dayOWeek]+')').addClass('active');
 					$('.arrow-down').css('left',daysOFWeekAnimation[dayOWeek]);
-					
+				}
+				
 				var Html = '';
 					Html += '<div class="movie-detail-widget '+displayItem+'" data-type="'+item.upcoming+'" data-day="'+days+'">';
-					Html += "<img class='listingItem' data-movieTrailer='"+encodeURIComponent(escape(item.movieTrailer))+"' data-upcoming='"+item.upcoming+"'  data-image='"+item.image+"' data-sch='"+item.movieschedule+"' data-durHH='"+item.durationHH+"' data-durMM='"+item.durationMM+"' data-name='"+encodeURIComponent(escape(item.name))+"' data-cast='"+encodeURIComponent(escape(item.cast))+"' data-synopsis='"+encodeURIComponent(escape(item.synopsis))+"' data-image='"+item.image+"' data-catagory='"+encodeURIComponent(escape(item.genre))+"' data-date='"+item.durationHH+"' data-price='"+item.price+"' src='"+item.image+"' alt='"+item.name+"'>";
-					Html += '<div class="movie-details">';
-					Html += "<h1 class='listingItem' data-movieTrailer='"+encodeURIComponent(escape(item.movieTrailer))+"' data-upcoming='"+item.upcoming+"'  data-image='"+item.image+"' data-sch='"+item.movieschedule+"' data-durHH='"+item.durationHH+"' data-durMM='"+item.durationMM+"' data-name='"+encodeURIComponent(escape(item.name))+"' data-cast='"+encodeURIComponent(escape(item.cast))+"' data-synopsis='"+encodeURIComponent(escape(item.synopsis))+"' data-image='"+item.image+"' data-catagory='"+encodeURIComponent(escape(item.genre))+"' data-date='"+item.durationHH+"' data-price='"+item.price+"'>"+item.name+"</h1>";
+					Html += "<img class='listingItem' data-movieTrailer='"+encodeURIComponent(escape(item.movieTralier))+"' data-upcoming='"+item.upcoming+"'  data-image='"+item.image+"' data-sch='"+item.movieschedule+"' data-durHH='"+item.durationHH+"' data-durMM='"+item.durationMM+"' data-name='"+encodeURIComponent(escape(item.name))+"' data-cast='"+encodeURIComponent(escape(item.cast))+"' data-synopsis='"+encodeURIComponent(escape(item.synopsis))+"' data-image='"+item.image+"' data-catagory='"+encodeURIComponent(escape(item.genre))+"' data-date='"+item.durationHH+"' data-price='"+item.price+"' src='"+item.image+"' alt='"+item.name+"'>";
+					Html += '<div class="movie-details overwriteMargin">';
+					Html += "<h1 class='listingItem' data-movieTrailer='"+encodeURIComponent(escape(item.movieTralier))+"' data-upcoming='"+item.upcoming+"'  data-image='"+item.image+"' data-sch='"+item.movieschedule+"' data-durHH='"+item.durationHH+"' data-durMM='"+item.durationMM+"' data-name='"+encodeURIComponent(escape(item.name))+"' data-cast='"+encodeURIComponent(escape(item.cast))+"' data-synopsis='"+encodeURIComponent(escape(item.synopsis))+"' data-image='"+item.image+"' data-catagory='"+encodeURIComponent(escape(item.genre))+"' data-date='"+item.durationHH+"' data-price='"+item.price+"'>"+item.name+"</h1>";
 					Html += '<div><span>'+item.genre+'</span><span> | </span><span>'+item.durationHH+'hr '+item.durationMM+' min</span></div>';
 					Html += '<div class="synopsis-container">';
 					Html += '<h2>Synopsis:</h2>';
-					Html += ' <p>'+item.synopsis+'</p>';
+					if(item.upcoming != true){
+					var synposis = item.synopsis;
+					var yourString = synposis; //replace with your string.
+					var maxLength = 110 // maximum number of characters to extract
+					
+					//trim the string to the maximum length
+					var trimmedString = yourString.substr(0, maxLength);
+					
+					//re-trim if we are in the middle of a word
+					trimmedString = trimmedString.substr(0, Math.min(trimmedString.length, trimmedString.lastIndexOf(" ")))
+						Html += ' <p>'+trimmedString+'...</p>';
+					}else{
+						Html += ' <p>'+item.synopsis+'</p>';
+					}
+					
 					Html += '</div>';
 					Html += '<div>';
 					Html += '<h2>Cast:</h2>';
@@ -279,19 +295,34 @@ function StartApp(){
 					}
 					Html += ' </div>';
 					Html += '</div>';
-					Html += '<div class="movie-price marginLeftMoviePrice"><div class="price">PKR '+pricingArray[item.price]+'</div><a href="http://thearena.com.pk/membership.php" target="_blank"><button>Book Now</button></a></div>';
-					Html += '</div>';
 					if(item.upcoming != true){
-						$('.movie-posters').append("<li data-type='"+item.upcoming+"' data-day='"+days+"' class='"+displayItem+"'><img src='"+item.image+"' alt='"+item.name+"' class='listingItem' data-movieTrailer='"+encodeURIComponent(escape(item.movieTrailer))+"' data-upcoming='"+item.upcoming+"'  data-image='"+item.image+"' data-sch='"+item.movieschedule+"' data-durHH='"+item.durationHH+"' data-durMM='"+item.durationMM+"' data-name='"+encodeURIComponent(escape(item.name))+"' data-cast='"+encodeURIComponent(escape(item.cast))+"' data-synopsis='"+encodeURIComponent(escape(item.synopsis))+"' data-image='"+item.image+"' data-catagory='"+encodeURIComponent(escape(item.genre))+"' data-date='"+item.durationHH+"' data-price='"+item.price+"'></li>");
+						Html += '<div class="movie-price marginLeftMoviePrice"><div class="price">PKR '+pricingArray[item.price]+'</div>';
+						Html += '<a href="http://thearena.com.pk/membership.php" target="_blank"><button>Book Now</button></a>';
+						if(item.movieTralier != '' && item.movieTralier != 'undefined' && item.movieTralier != undefined){
+							Html += '<a href="'+item.movieTralier+'" target="_blank"><button class="tralier">Watch Trailer</button></a>';
+						}
+						Html += '</div>';
+						Html += '</div>';
+					}else{
+						if(item.movieTralier != '' && item.movieTralier != 'undefined' && item.movieTralier != undefined){
+							Html += '<div class="movie-price marginLeftMoviePrice"><div class="price"></div>';
+							Html += '<a href="'+item.movieTralier+'" target="_blank"><button class="tralier uptralier">Watch Trailer</button></a>';
+							Html += '</div>';
+							Html += '</div>';
+						}
+					}
+					console.log(Html);
+					if(item.upcoming != true){
+						$('.movie-posters').append("<li data-type='"+item.upcoming+"' data-day='"+days+"'><img src='"+item.image+"' alt='"+item.name+"' class='listingItem' data-movieTrailer='"+encodeURIComponent(escape(item.movieTralier))+"' data-upcoming='"+item.upcoming+"'  data-image='"+item.image+"' data-sch='"+item.movieschedule+"' data-durHH='"+item.durationHH+"' data-durMM='"+item.durationMM+"' data-name='"+encodeURIComponent(escape(item.name))+"' data-cast='"+encodeURIComponent(escape(item.cast))+"' data-synopsis='"+encodeURIComponent(escape(item.synopsis))+"' data-image='"+item.image+"' data-catagory='"+encodeURIComponent(escape(item.genre))+"' data-date='"+item.durationHH+"' data-price='"+item.price+"'></li>");
 						$('.movieListingBottom').append(Html);
 					}else{
-						$('.movie-postersUp').append("<li data-type='"+item.upcoming+"' data-day='"+days+"' class='"+displayItem+"'><img src='"+item.image+"' alt='"+item.name+"' class='listingItem' data-movieTrailer='"+encodeURIComponent(escape(item.movieTrailer))+"' data-upcoming='"+item.upcoming+"'  data-image='"+item.image+"' data-sch='"+item.movieschedule+"' data-durHH='"+item.durationHH+"' data-durMM='"+item.durationMM+"' data-name='"+encodeURIComponent(escape(item.name))+"' data-cast='"+encodeURIComponent(escape(item.cast))+"' data-synopsis='"+encodeURIComponent(escape(item.synopsis))+"' data-image='"+item.image+"' data-catagory='"+encodeURIComponent(escape(item.genre))+"' data-date='"+item.durationHH+"' data-price='"+item.price+"'></li>");
+						$('.movie-postersUp').append("<li data-type='"+item.upcoming+"' data-day='"+days+"' class='"+displayItem+"'><img src='"+item.image+"' alt='"+item.name+"' class='listingItem' data-movieTrailer='"+encodeURIComponent(escape(item.movieTralier))+"' data-upcoming='"+item.upcoming+"'  data-image='"+item.image+"' data-sch='"+item.movieschedule+"' data-durHH='"+item.durationHH+"' data-durMM='"+item.durationMM+"' data-name='"+encodeURIComponent(escape(item.name))+"' data-cast='"+encodeURIComponent(escape(item.cast))+"' data-synopsis='"+encodeURIComponent(escape(item.synopsis))+"' data-image='"+item.image+"' data-catagory='"+encodeURIComponent(escape(item.genre))+"' data-date='"+item.durationHH+"' data-price='"+item.price+"'></li>");
 						$('.movieListingBottomUp').append(Html);
 					}
 				$('.preLoader').fadeOut();
 				}else{
-					var dayOWeek  = new Date().getDay();
-					dayOWeek = 0;
+					var dayOWeek  = new Date().getDay()+2;
+					//dayOWeek = 0;
 					$('#week-days li:nth-child('+daysOFWeekLiPos[dayOWeek]+')').addClass('active');
 					$('.arrow-down').css('left',daysOFWeekAnimation[dayOWeek]);
 					$('.preLoader').fadeOut();
@@ -332,14 +363,14 @@ function StartApp(){
 						}
                 });
 				
-				$('.movie-posters').find('li').each(function(index, element) {
+				/*$('.movie-posters').find('li').each(function(index, element) {
 						var listDays = $(this).attr('data-day');
                     	if(listDays.indexOf(daysOFWeek[ClickedLi]) > -1){
 							$(this).removeClass('hideMe');
 						}else{
 							$(this).addClass('hideMe');
 						}
-                });
+                });*/
 				if(searchResult  != 0){
 					searchResult = 0;
 					$('.soon').hide();
@@ -390,15 +421,19 @@ function StartApp(){
 					$('#alpha-layer').addClass('hideMe');
 		});
 		$(document.body).on('click', '.listingItem', function() {
+			if($(this).attr('data-upcoming') != 'true'){
+				if($(this).attr('data-upcoming') != 'true'){
 					var dataSchedule = JSON.parse($(this).attr('data-sch'));
-					if($(this).attr('data-upcoming') == '1'){
+				}
+					if($(this).attr('data-upcoming') == 'true'){
 						$('#schDetails').addClass('hideMe');
 					}else{
 						$('#schDetails').removeClass('hideMe');
 					}
+					if($(this).attr('data-upcoming') != 'true'){
 					var NextItem = '';
 						$.each(daysOFWeekAll,function(indexD,itemD){
-							NextItem += '<tr>';
+							NextItem += '<tr class="day_'+indexD+'">';
 							NextItem += '<td>'+itemD+'</td>';
 							var NextItemDp = '';
 							$.each(dataSchedule,function(index,items){
@@ -425,13 +460,23 @@ function StartApp(){
 						}
 						NextItem += '</tr>';
 						$('.MovieSch').html(NextItem);
+						$('.MovieSch').prepend('<tr>'+$('.day_6').html()+'</tr>');
+						$('.MovieSch').prepend('<tr>'+$('.day_5').html()+'</tr>');
+						$('.MovieSch').prepend('<tr>'+$('.day_4').html()+'</tr>');
+						$('.MovieSch tr:nth-child(8)').remove();
+						$('.MovieSch tr:nth-child(8)').remove();
+						$('.MovieSch tr:nth-child(8)').remove();
+						
+					}
 					//$('.MovieImg').attr('src',$(this).attr('data-image'))
 					//alert($(this).attr('data-upcoming'));
 					if($(this).attr('data-movieTrailer') != '' && $(this).attr('data-movieTrailer') != null && $(this).attr('data-movieTrailer') != 'null' && $(this).attr('data-movieTrailer') != 'undefined'){
-						$('.movieTrailer').attr('href',decodeURIComponent(unescape($(this).attr('data-movieTrailer'))));
-						$('.movieTrailer').show();
+						//$('.movieTrailer').attr('href',decodeURIComponent(unescape($(this).attr('data-movieTrailer'))));
+						//$('.movieTrailer').show();
+						$('.traliers').attr('href',decodeURIComponent(unescape($(this).attr('data-movieTrailer'))));
+						$('.traliers').show();
 					}else{
-						$('.movieTrailer').hide();
+						$('.traliers').hide();
 					}
 					$('.MoviePrice').html('PKR '+pricingArray[$(this).attr('data-price')]);
 					$('.MovieImg').attr('src',$(this).attr('data-image'));
@@ -444,6 +489,7 @@ function StartApp(){
 					$('.MovieSynopsis').html(decodeURIComponent(unescape($(this).attr('data-synopsis'))));
 					$('.modal').removeClass('hideMe');
 					$('#alpha-layer').removeClass('hideMe');
+		}
 		});
 		
 		
