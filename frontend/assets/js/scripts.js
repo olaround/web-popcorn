@@ -179,6 +179,8 @@ function StartApp(){
 			$('.movieListingBottom').html('');
 			console.log(MoviesArray);
 			var DayDataCount = 0;
+			var dailyWidth = 0;
+			var dailyWidthUp = 0;
 			console.log(MoviesArray);
 			if(MoviesArray != ''){
 			$.each(MoviesArray,function(index,item){
@@ -313,10 +315,12 @@ function StartApp(){
 					}
 					console.log(Html);
 					if(item.upcoming != true){
-						$('.movie-posters').append("<li data-type='"+item.upcoming+"' data-day='"+days+"'><img src='"+item.image+"' alt='"+item.name+"' class='listingItem' data-movieTrailer='"+encodeURIComponent(escape(item.movieTralier))+"' data-upcoming='"+item.upcoming+"'  data-image='"+item.image+"' data-sch='"+item.movieschedule+"' data-durHH='"+item.durationHH+"' data-durMM='"+item.durationMM+"' data-name='"+encodeURIComponent(escape(item.name))+"' data-cast='"+encodeURIComponent(escape(item.cast))+"' data-synopsis='"+encodeURIComponent(escape(item.synopsis))+"' data-image='"+item.image+"' data-catagory='"+encodeURIComponent(escape(item.genre))+"' data-date='"+item.durationHH+"' data-price='"+item.price+"'></li>");
+						dailyWidth = dailyWidth + 180;
+						$('.movie-posters').append("<img data-type='"+item.upcoming+"' data-day='"+days+"' src='"+item.image+"' alt='"+item.name+"' class='listingItem' data-movieTrailer='"+encodeURIComponent(escape(item.movieTralier))+"' data-upcoming='"+item.upcoming+"'  data-image='"+item.image+"' data-sch='"+item.movieschedule+"' data-durHH='"+item.durationHH+"' data-durMM='"+item.durationMM+"' data-name='"+encodeURIComponent(escape(item.name))+"' data-cast='"+encodeURIComponent(escape(item.cast))+"' data-synopsis='"+encodeURIComponent(escape(item.synopsis))+"' data-image='"+item.image+"' data-catagory='"+encodeURIComponent(escape(item.genre))+"' data-date='"+item.durationHH+"' data-price='"+item.price+"'>");
 						$('.movieListingBottom').append(Html);
 					}else{
-						$('.movie-postersUp').append("<li data-type='"+item.upcoming+"' data-day='"+days+"' class='"+displayItem+"'><img src='"+item.image+"' alt='"+item.name+"' class='listingItem' data-movieTrailer='"+encodeURIComponent(escape(item.movieTralier))+"' data-upcoming='"+item.upcoming+"'  data-image='"+item.image+"' data-sch='"+item.movieschedule+"' data-durHH='"+item.durationHH+"' data-durMM='"+item.durationMM+"' data-name='"+encodeURIComponent(escape(item.name))+"' data-cast='"+encodeURIComponent(escape(item.cast))+"' data-synopsis='"+encodeURIComponent(escape(item.synopsis))+"' data-image='"+item.image+"' data-catagory='"+encodeURIComponent(escape(item.genre))+"' data-date='"+item.durationHH+"' data-price='"+item.price+"'></li>");
+						dailyWidthUp = dailyWidthUp + 180;
+						$('.movie-postersUp').append("<img data-type='"+item.upcoming+"' src='"+item.image+"' data-day='"+days+"' alt='"+item.name+"' class='listingItem' data-movieTrailer='"+encodeURIComponent(escape(item.movieTralier))+"' data-upcoming='"+item.upcoming+"'  data-image='"+item.image+"' data-sch='"+item.movieschedule+"' data-durHH='"+item.durationHH+"' data-durMM='"+item.durationMM+"' data-name='"+encodeURIComponent(escape(item.name))+"' data-cast='"+encodeURIComponent(escape(item.cast))+"' data-synopsis='"+encodeURIComponent(escape(item.synopsis))+"' data-image='"+item.image+"' data-catagory='"+encodeURIComponent(escape(item.genre))+"' data-date='"+item.durationHH+"' data-price='"+item.price+"'>");
 						$('.movieListingBottomUp').append(Html);
 					}
 				$('.preLoader').fadeOut();
@@ -338,6 +342,21 @@ function StartApp(){
 				$('.arrow-down').css('left',daysOFWeekAnimation[dayOWeek]);
 				$('.preLoader').fadeOut();
 			}
+			
+			//$('.movie-postersUp').css('width',dailyWidthUp+'px');
+			$(".content_6").mCustomScrollbar({
+					horizontalScroll:true,
+					advanced:{
+						autoExpandHorizontalScroll:true
+					}
+				});
+			$(".content_5").mCustomScrollbar({
+				horizontalScroll:true,
+				advanced:{
+					autoExpandHorizontalScroll:true
+				}
+			});
+			$(".mainContUp").addClass('hideMe');
 		}
 		
 		//end get city function
@@ -386,9 +405,9 @@ function StartApp(){
 		
 		$(document.body).on('click', '#main-buttons li button', function() {
 					if($(this).attr('data-pos') == 1){
-							$('.movie-posters').removeClass('hideMe');
+							$('.mainCont').removeClass('hideMe');
 							$('.movieListingBottom').removeClass('hideMe');
-							$('.movie-postersUp').addClass('hideMe');
+							$('.mainContUp').addClass('hideMe');
 							$('.movieListingBottomUp').addClass('hideMe');
 							$('#main-buttons li button').removeClass('active');
 							$(this).addClass('active');
@@ -401,9 +420,9 @@ function StartApp(){
 							}
 							
 					}else{
-							$('.movie-postersUp').removeClass('hideMe');
+							$('.mainContUp').removeClass('hideMe');
 							$('.movieListingBottomUp').removeClass('hideMe');
-							$('.movie-posters').addClass('hideMe');
+							$('.mainCont').addClass('hideMe');
 							$('.movieListingBottom').addClass('hideMe');
 							$('#main-buttons li button').removeClass('active');
 							$(this).addClass('active');
@@ -496,5 +515,7 @@ function StartApp(){
 		
 		// end event listener
 		
-		$(function(){})
+		$(function(){
+			
+		})
 }
