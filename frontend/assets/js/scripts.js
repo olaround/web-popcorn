@@ -142,7 +142,11 @@ function StartApp(){
 				if(item){
 				var dayOWeek  = new Date().getDay()+2;
 				if(dayOWeek >= 7 ){
-						dayOWeek = 0;
+						if(dayOWeek == 7){
+							dayOWeek = 0;
+						}else{
+							dayOWeek = 1;
+						}
 					}
 				//dayOWeek = 0;
 				
@@ -287,7 +291,11 @@ function StartApp(){
 				}else{
 					var dayOWeek  = new Date().getDay()+2;
 					if(dayOWeek >= 7 ){
-						dayOWeek = 0;
+						if(dayOWeek == 7){
+							dayOWeek = 0;
+						}else{
+							dayOWeek = 1;
+						}
 					}
 					//dayOWeek = 0;
 					//alert(dayOWeek);return true;
