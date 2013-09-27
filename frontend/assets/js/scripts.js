@@ -215,12 +215,15 @@ function StartApp(){
 					$('#week-days li:nth-child('+daysOFWeekLiPos[dayOWeek]+')').addClass('active');
 					$('.arrow-down').css('left',daysOFWeekAnimation[dayOWeek]);
 				}
-				
+				var threeD = '';
+				if(item.threeD){
+					threeD = '<sub class="threed">&nbsp;(3D)</sub>'
+				}
 				var Html = '';
 					Html += '<div class="movie-detail-widget '+displayItem+'" data-type="'+item.upcoming+'" data-day="'+days+'">';
 					Html += "<img class='listingItem' data-movieTrailer='"+encodeURIComponent(escape(item.movieTralier))+"' data-upcoming='"+item.upcoming+"'  data-image='"+item.image+"' data-sch='"+item.movieschedule+"' data-durHH='"+item.durationHH+"' data-durMM='"+item.durationMM+"' data-name='"+encodeURIComponent(escape(item.name))+"' data-cast='"+encodeURIComponent(escape(item.cast))+"' data-synopsis='"+encodeURIComponent(escape(item.synopsis))+"' data-image='"+item.image+"' data-catagory='"+encodeURIComponent(escape(item.genre))+"' data-date='"+item.durationHH+"' data-price='"+item.price+"' src='"+item.image+"' alt='"+item.name+"'>";
 					Html += '<div class="movie-details overwriteMargin">';
-					Html += "<h1 class='listingItem' data-movieTrailer='"+encodeURIComponent(escape(item.movieTralier))+"' data-upcoming='"+item.upcoming+"'  data-image='"+item.image+"' data-sch='"+item.movieschedule+"' data-durHH='"+item.durationHH+"' data-durMM='"+item.durationMM+"' data-name='"+encodeURIComponent(escape(item.name))+"' data-cast='"+encodeURIComponent(escape(item.cast))+"' data-synopsis='"+encodeURIComponent(escape(item.synopsis))+"' data-image='"+item.image+"' data-catagory='"+encodeURIComponent(escape(item.genre))+"' data-date='"+item.durationHH+"' data-price='"+item.price+"'>"+item.name+"</h1>";
+					Html += "<h1 class='listingItem' data-movieTrailer='"+encodeURIComponent(escape(item.movieTralier))+"' data-upcoming='"+item.upcoming+"'  data-image='"+item.image+"' data-sch='"+item.movieschedule+"' data-durHH='"+item.durationHH+"' data-durMM='"+item.durationMM+"' data-name='"+encodeURIComponent(escape(item.name))+"' data-cast='"+encodeURIComponent(escape(item.cast))+"' data-synopsis='"+encodeURIComponent(escape(item.synopsis))+"' data-image='"+item.image+"' data-catagory='"+encodeURIComponent(escape(item.genre))+"' data-date='"+item.durationHH+"' data-price='"+item.price+"'>"+item.name+threeD+"</h1>";
 					Html += '<div><span>'+item.genre+'</span><span> | </span><span>'+item.durationHH+'hr '+item.durationMM+' min</span></div>';
 					Html += '<div class="synopsis-container">';
 					Html += '<h2>Synopsis:</h2>';
