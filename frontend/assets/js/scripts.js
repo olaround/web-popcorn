@@ -100,7 +100,7 @@ function StartApp(){
 											});
 											}else{
 												//alert(Schedule);
-												createHtmlForPage();
+												//createHtmlForPage();
 											}
 											
 											
@@ -241,7 +241,7 @@ function StartApp(){
 					Html += ' <p>'+item.cast+'</p>';
 					Html += '</div>';
 					Html += '<div>';
-					if(item.upcoming != true){
+					if(item.upcoming != true && item.movieschedule){
 							Html += '<h2>Shows:</h2>';
 							Html += '<p>';
 							$.each(itemSchedule,function(id,itm){
@@ -273,9 +273,11 @@ function StartApp(){
 					}
 					console.log(Html);
 					if(item.upcoming != true){
-						dailyWidth = dailyWidth + 180;
-						$('.movie-posters').append("<img data-type='"+item.upcoming+"' data-day='"+days+"' src='"+item.image+"' alt='"+item.name+"' class='listingItem' data-movieTrailer='"+encodeURIComponent(escape(item.movieTralier))+"' data-upcoming='"+item.upcoming+"'  data-image='"+item.image+"' data-sch='"+item.movieschedule+"' data-durHH='"+item.durationHH+"' data-durMM='"+item.durationMM+"' data-name='"+encodeURIComponent(escape(item.name))+"' data-cast='"+encodeURIComponent(escape(item.cast))+"' data-synopsis='"+encodeURIComponent(escape(item.synopsis))+"' data-image='"+item.image+"' data-catagory='"+encodeURIComponent(escape(item.genre))+"' data-date='"+item.durationHH+"' data-price='"+item.price+"'>");
-						$('.movieListingBottom').append(Html);
+						if(item.movieschedule){
+							dailyWidth = dailyWidth + 180;
+							$('.movie-posters').append("<img data-type='"+item.upcoming+"' data-day='"+days+"' src='"+item.image+"' alt='"+item.name+"' class='listingItem' data-movieTrailer='"+encodeURIComponent(escape(item.movieTralier))+"' data-upcoming='"+item.upcoming+"'  data-image='"+item.image+"' data-sch='"+item.movieschedule+"' data-durHH='"+item.durationHH+"' data-durMM='"+item.durationMM+"' data-name='"+encodeURIComponent(escape(item.name))+"' data-cast='"+encodeURIComponent(escape(item.cast))+"' data-synopsis='"+encodeURIComponent(escape(item.synopsis))+"' data-image='"+item.image+"' data-catagory='"+encodeURIComponent(escape(item.genre))+"' data-date='"+item.durationHH+"' data-price='"+item.price+"'>");
+							$('.movieListingBottom').append(Html);
+						}
 					}else{
 						dailyWidthUp = dailyWidthUp + 180;
 						$('.movie-postersUp').append("<img data-type='"+item.upcoming+"' src='"+item.image+"' data-day='"+days+"' alt='"+item.name+"' class='listingItem' data-movieTrailer='"+encodeURIComponent(escape(item.movieTralier))+"' data-upcoming='"+item.upcoming+"'  data-image='"+item.image+"' data-sch='"+item.movieschedule+"' data-durHH='"+item.durationHH+"' data-durMM='"+item.durationMM+"' data-name='"+encodeURIComponent(escape(item.name))+"' data-cast='"+encodeURIComponent(escape(item.cast))+"' data-synopsis='"+encodeURIComponent(escape(item.synopsis))+"' data-image='"+item.image+"' data-catagory='"+encodeURIComponent(escape(item.genre))+"' data-date='"+item.durationHH+"' data-price='"+item.price+"'>");
@@ -303,21 +305,26 @@ function StartApp(){
 				$('#week-days li:nth-child('+daysOFWeekLiPos[dayOWeek]+')').addClass('active');
 				$('.arrow-down').css('left',daysOFWeekAnimation[dayOWeek]);
 				$('.preLoader').fadeOut();
+				$('.soon').show();
 			}
 			
 			//$('.movie-postersUp').css('width',dailyWidthUp+'px');
-			$(".content_6").mCustomScrollbar({
+			if($('.movie-postersUp img').length > 0){
+				$(".content_6").mCustomScrollbar({
+						horizontalScroll:true,
+						advanced:{
+							autoExpandHorizontalScroll:true
+						}
+					});
+			}
+			if($('.movie-posters img').length > 0){
+				$(".content_5").mCustomScrollbar({
 					horizontalScroll:true,
 					advanced:{
 						autoExpandHorizontalScroll:true
 					}
 				});
-			$(".content_5").mCustomScrollbar({
-				horizontalScroll:true,
-				advanced:{
-					autoExpandHorizontalScroll:true
-				}
-			});
+			}
 			$(".mainContUp").addClass('hideMe');
 			/*$('.images_container img').hover(function(){
 					$(this).animate({width:$(this).width() + 20 + 'px',height:$(this).height() + 20 + 'px',left: '-10px',top: '-10px'});
