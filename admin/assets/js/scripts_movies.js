@@ -28,8 +28,9 @@ function StartApp(){
 		
 		// handle error
 		function handleError(error) {
-			var text = error + (error.request ? ' - ' + error.request.status : '');
-			$('#errorlog').append($('<li>').text(text));
+			var text = error + (error.request+' : Please try again later.');
+			alert(text);
+			//$('#errorlog').append($('<li>').text(text));
 		}
 		//end handle error
 		
@@ -216,19 +217,19 @@ function StartApp(){
 				$('#movieImage').val($(this).attr('data-image'));
 				$('#upload').attr('src',$(this).attr('data-image'));
 			}
-			$('#movieName').val(decodeURIComponent(unescape($(this).attr('data-name'))));
+			$('#movieName').val(unescape(decodeURIComponent($(this).attr('data-name'))));
 			if($(this).attr('data-3d') == 'true'){
 				$('#movie3d').attr('checked','checked');
 			}else{
 				$('#movie3d').removeAttr('checked');
 			}
-			$('#movieCast').val(decodeURIComponent(unescape($(this).attr('data-cast'))));
-			$('#movieGenre').val(decodeURIComponent(unescape($(this).attr('data-genre'))));
+			$('#movieCast').val(unescape(decodeURIComponent($(this).attr('data-cast'))));
+			$('#movieGenre').val(unescape(decodeURIComponent($(this).attr('data-genre'))));
 			$('#movieDurationHH').val($(this).attr('data-durationHH'));
 			$('#movieDurationMM').val($(this).attr('data-durationMM'));
 			$('#moviePrice').val($(this).attr('data-price'));			
-			$('#movieSynopsis').val(decodeURIComponent(unescape($(this).attr('data-synopsis'))));
-			$('#movieTralier').val(decodeURIComponent(unescape($(this).attr('data-movieTralier'))));
+			$('#movieSynopsis').val(unescape(decodeURIComponent($(this).attr('data-synopsis'))));
+			$('#movieTralier').val(unescape(decodeURIComponent($(this).attr('data-movieTralier'))));
 			
 			if($(this).attr('data-upcoming') == 'true'){
 				

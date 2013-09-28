@@ -12,7 +12,7 @@ WeekOptions[WeekCount]['start'] = '2013-1-1';
 var daysToSubtract = [-2,-3,-4,-5,-6,0,-1];
 var daysPointer = [];
 var daysPointerDisp = [];
-
+var moviesInSchedule = []; 
 function GetApp(){
 	
 	var OptionList = '';
@@ -84,8 +84,9 @@ function StartApp(){
 		
 		// handle error
 		function handleError(error) {
-			var text = error + (error.request ? ' - ' + error.request.status : '');
-			$('#errorlog').append($('<li>').text(text));
+			var text = error + (error.request+' : Please try again later.');
+			alert(text);
+			//$('#errorlog').append($('<li>').text(text));
 		}
 		//end handle error
 		
@@ -156,7 +157,7 @@ function StartApp(){
 								MoviesArray[item.id] = item.name;
 							
 				});
-				$('#movieSelect').html(MoviesList);
+				//$('#movieSelect').html(MoviesList);
 				//alert(pricingList);
 			}, handleError).done(function(){
 				$('.loader').hide();
@@ -172,10 +173,10 @@ function StartApp(){
 		  /*var query = todoItemTable.where(function(dated){
 											return this.id <= dated
 											},2);*/
-			
+			moviesInSchedule = []; 
 			query.read().then(function(todoItems) {
 				var listItems = $.map(todoItems, function(item) {
-					console.log(item);
+					moviesInSchedule[item.movieSelect] = item.id;
 						var html='';
 							html +='<div class="panel panel-default" data-id="'+item.id+'">';
 							html +='<div class="panel-heading">';
@@ -191,7 +192,18 @@ function StartApp(){
 				});
 				 $('#todo-items').empty().append(listItems).toggle(listItems.length > 0);
 				 $('.loader').hide();
-			}, handleError);
+			}, handleError).done(function(){
+				MoviesList = '';
+				MoviesList += '<option value="">Select Movie</option>';
+				$.each(MoviesArray,function(index,items){
+					if(!moviesInSchedule[index]){
+						if(items){
+							MoviesList += '<option value='+index+'>'+items+'</option>';
+						}
+					}
+				});
+				$('#movieSelect').html(MoviesList);
+			});
     
 		}
 		//end createHtmlForMovies
