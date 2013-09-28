@@ -64,8 +64,9 @@ function StartApp(){
 		getCinema();
 		// handle error
 		function handleError(error) {
-			var text = error + (error.request ? ' - ' + error.request.status : '');
-			$('#errorlog').append($('<li>').text(text));
+			var text = error + (error.request+' : Please try again later.');
+			alert(text);
+			//$('#errorlog').append($('<li>').text(text));
 		}
 		//end handle error
 		
@@ -475,9 +476,9 @@ function StartApp(){
 					//$('.MovieImg').attr('src',$(this).attr('data-image'))
 					//alert($(this).attr('data-upcoming'));
 					if($(this).attr('data-movieTrailer') != '' && $(this).attr('data-movieTrailer') != null && $(this).attr('data-movieTrailer') != 'null' && $(this).attr('data-movieTrailer') != 'undefined'){
-						//$('.movieTrailer').attr('href',decodeURIComponent(unescape($(this).attr('data-movieTrailer'))));
+						//$('.movieTrailer').attr('href',unescape(decodeURIComponent($(this).attr('data-movieTrailer'))));
 						//$('.movieTrailer').show();
-						$('.traliers').attr('href',decodeURIComponent(unescape($(this).attr('data-movieTrailer'))));
+						$('.traliers').attr('href',unescape(decodeURIComponent($(this).attr('data-movieTrailer'))));
 						$('.traliers').show();
 					}else{
 						$('.traliers').hide();
@@ -485,12 +486,12 @@ function StartApp(){
 					$('.MoviePrice').html('PKR '+pricingArray[$(this).attr('data-price')]);
 					$('.MovieImg').attr('src',$(this).attr('data-image'));
 					$('.Dur').html($(this).attr('data-durHH')+'hr '+$(this).attr('data-durMM')+'min');
-					$('.MovieName').html(decodeURIComponent(unescape($(this).attr('data-name'))));
-					$('.MovieCat').html(decodeURIComponent(unescape($(this).attr('data-catagory'))));
+					$('.MovieName').html(unescape(decodeURIComponent($(this).attr('data-name'))));
+					$('.MovieCat').html(unescape(decodeURIComponent($(this).attr('data-catagory'))));
 					//$('.MovieSchDate').html($(this).attr('data-date'))
 					//$('.MovieSch').attr('src',$(this).attr('data-image'))
-					$('.MovieCast').html(decodeURIComponent(unescape($(this).attr('data-cast'))));
-					$('.MovieSynopsis').html(decodeURIComponent(unescape($(this).attr('data-synopsis'))));
+					$('.MovieCast').html(unescape(decodeURIComponent($(this).attr('data-cast'))));
+					$('.MovieSynopsis').html(unescape(decodeURIComponent($(this).attr('data-synopsis'))));
 					$('.modal').removeClass('hideMe');
 					$('#alpha-layer').removeClass('hideMe');
 		}

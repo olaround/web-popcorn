@@ -21,8 +21,9 @@ function StartApp(){
 		
 		// handle error
 		function handleError(error) {
-			var text = error + (error.request ? ' - ' + error.request.status : '');
-			$('#errorlog').append($('<li>').text(text));
+			var text = error + (error.request+' : Please try again later.');
+			alert(text);
+			//$('#errorlog').append($('<li>').text(text));
 		}
 		//end handle error
 		
