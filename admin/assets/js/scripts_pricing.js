@@ -15,15 +15,28 @@ function StartApp(){
 		CinemaTable = client.getTable('cinema');
 		PricingTable = client.getTable('pricing');
 		//get page wise start data
-		
+		if(localStorage.getItem('userId')){
+			client.currentUser = {};
+			client.currentUser.userId = localStorage.getItem('userId');
+			client.currentUser.mobileServiceAuthenticationToken = localStorage.getItem('mobileServiceAuthenticationToken');
+			$('.adminName').html(localStorage.getItem('userName'));
+		}else{
+			top.location.href = 'login.html';
+		}
    	 	getCity();
 		
 		//end page wise start data
 		
 		// handle error
 		function handleError(error) {
-			var text = error + (error.request+' : Please try again later.');
-			alert(text);
+			if(error.message.indexOf('authentication') > 0){
+				top.location.href = 'login.html';
+			}else if(error.message.indexOf('connection') > 0){
+				alert('Internet Connection failure, Please check your internet connection and then reload the page');
+			}else{
+				var text = error + (error.request+' : Please try again later.');
+				alert(text);
+			}
 			//$('#errorlog').append($('<li>').text(text));
 		}
 		//end handle error

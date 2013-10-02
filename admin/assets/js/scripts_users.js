@@ -11,7 +11,7 @@ function GetApp(){
 }
 function StartApp(){	
 	var client = new WindowsAzure.MobileServiceClient(AppURL, AppId),
-		CityTable = client.getTable('city');
+		UserTable = client.getTable('users');
 		if(localStorage.getItem('userId')){
 			client.currentUser = {};
 			client.currentUser.userId = localStorage.getItem('userId');
@@ -20,7 +20,7 @@ function StartApp(){
 		}else{
 			top.location.href = 'login.html';
 		}
-		
+		console.log(client);
 		// handle error
 		function handleError(error) {
 			if(error.message.indexOf('authentication') > 0){
@@ -41,8 +41,8 @@ function StartApp(){
 		//end get city function
 		
 		// createHtmlForMovies
-		function createHtmlForCities(){
-			var query = CityTable.where({});
+		function createHtmlForUsers(){
+			var query = UserTable.where({});
 		  /*var query = todoItemTable.where(function(dated){
 											return this.id <= dated
 											},2);*/
@@ -53,10 +53,10 @@ function StartApp(){
 						var html='';
 							html +='<div class="panel panel-default" data-id="'+item.id+'">';
 							html +='<div class="panel-heading">';
-							html +='<div class="col-lg-11 cityName"> '+item.city+'</div>';
+							html +='<div class="col-lg-11 cityName"> '+item.name+'</div>';
 							html +='<div class="col-lg-1">';
 							html +='<button  class="close"  data-id="'+item.id+'">x</button>';
-							html +="<button data-name='"+item.city+"' data-id='"+item.id+"'  type='button' class='edit' title='edit'><span class='glyphicon glyphicon-pencil'></span></button>";
+							html +="<button data-name='"+item.name+"' data-id='"+item.id+"' data-fb='"+item.fb+"' data-twt='"+item.twitter+"' data-micro='"+item.microsoft+"' data-status='"+item.status+"' data-google='"+item.google+"'  type='button' class='edit' title='edit'><span class='glyphicon glyphicon-pencil'></span></button>";
 							html +='</div>     ';              
 							html +='<div class="clearOnly"></div>';
 							html +='</div>';
@@ -69,14 +69,19 @@ function StartApp(){
 			}, handleError);
     
 		}
-		createHtmlForCities()
+		createHtmlForUsers()
 		//end createHtmlForMovies
 		// event listener
 		
 		
 		$(document.body).on('click', '.edit', function() {
-			$('#cityId').val($(this).attr('data-id'));
-			$('#cityName').val($(this).attr('data-name'));
+			$('#userId').val($(this).attr('data-id'));
+			$('#userName').val($(this).attr('data-name'));
+			$('#userFb').val($(this).attr('data-fb'));
+			$('#userTwt').val($(this).attr('data-twt'));
+			$('#userGoogle').val($(this).attr('data-google'));
+			$('#userMicro').val($(this).attr('data-micro'));
+			$('#userStatus').val($(this).attr('data-status'));
 			$('#myModal').modal();
 		});
 		
@@ -85,7 +90,7 @@ function StartApp(){
 			var result = confirm("You are about to delete this item, all associated data will de deleted. Click OK to continue.");
 			if (result==true) {
 				$('.loader').show();
-			CityTable.del({ id: $(this).attr('data-id') }).then(createHtmlForCities, handleError).done(function(){
+			UserTable.del({ id: $(this).attr('data-id') }).then(createHtmlForUsers, handleError).done(function(){
 				$('.loader').hide();
 			});
 			}}
@@ -98,24 +103,39 @@ function StartApp(){
 		
 		$('#add-item').on('click',function() {
 			$('.loader').show();
-			var cityName = $('#cityName').val();
-			if(cityName == ''){
-				alert('Please enter Cinema Name');
+			var userName = $('#userName').val();
+			var userFb = $('#userFb').val();
+			var userTwt = $('#userTwt').val();
+			var userGoogle = $('#userGoogle').val();
+			var userMicro = $('#userMicro').val();
+			var userState = $('#userStatus').val();
+			if(userName == '' && userFb == '' && userTwt == '' && userGoogle == ''){
+				alert('Please enter User Name and one of ID');
 			}else{
-				if($('#cityId').val() == ''){
+				if($('#userId').val() == ''){
 						var theNewRow = {
-							city: cityName													
+							name: userName,
+							fb: userFb,
+							twitter: userTwt,
+							google: userGoogle,
+							microsoft: userMicro,
+							status: userState											
 						};
-						CityTable.insert(theNewRow).then(createHtmlForCities, handleError).then(function(){
+						UserTable.insert(theNewRow).then(createHtmlForUsers, handleError).then(function(){
 							$('#myModal').modal('hide');
 							$('.loader').hide();
 						});
 				}else{
 						var theNewRow = {
-							id: parseInt($('#cityId').val()),
-							city: cityName	
+							id: parseInt($('#userId').val()),
+							name: userName,
+							fb: userFb,
+							twitter: userTwt,
+							google: userGoogle,
+							microsoft: userMicro,
+							status: userState	
 						};
-						CityTable.update(theNewRow).then(createHtmlForCities, handleError).then(function(){
+						UserTable.update(theNewRow).then(createHtmlForUsers, handleError).then(function(){
 							$('#myModal').modal('hide');
 							$('.loader').hide();
 						});
@@ -124,7 +144,6 @@ function StartApp(){
 		}
     });
 		// end event listener
-	
 		
 		
 }

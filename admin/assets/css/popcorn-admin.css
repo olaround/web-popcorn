@@ -36,3 +36,24 @@ body {
 	display: inline-block;
 	width: 51px;
 }
+.floatRight{
+	float:right;
+}
+.colorRed a{
+	color:#428bca !important;
+}
+.hideMe{
+	display:none !important;
+}
+.label-info{
+	margin-top: 7px;
+	display: inline-block;
+	width: auto;
+	padding: 5px;
+
+}
+@media (min-width: 768px)  and (max-width:991px){
+	.container .row:nth-child(1) {
+		padding-top: 59px;
+	}
+}
