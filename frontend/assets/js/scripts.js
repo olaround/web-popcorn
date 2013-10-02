@@ -64,8 +64,14 @@ function StartApp(){
 		getCinema();
 		// handle error
 		function handleError(error) {
-			var text = error + (error.request+' : Please try again later.');
-			alert(text);
+			if(error.message.indexOf('authentication') > 0){
+				top.location.href = 'login.html';
+			}else if(error.message.indexOf('connection') > 0){
+				alert('Internet Connection failure, Please check your internet connection and then reload the page');
+			}else{
+				var text = error + (error.request+' : Please try again later.');
+				alert(text);
+			}
 			//$('#errorlog').append($('<li>').text(text));
 		}
 		//end handle error
