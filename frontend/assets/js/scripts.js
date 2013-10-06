@@ -363,6 +363,10 @@ function StartApp(){
 			},function(){				
 					$(this).animate({width:$(this).width() - 20 + 'px',height:$(this).height() - 20 + 'px',left: '0',top: '0'});
 			});*/
+			
+			if(FB){
+				FB.Canvas.setAutoGrow(true);
+			}
 		}
 		
 		//end get city function
@@ -419,6 +423,9 @@ function StartApp(){
 					$('.arrow-down').css('left',daysOFWeekAnimation[ClickedLi]);
 				}
 			}
+			if(FB){
+				FB.Canvas.setAutoGrow(true);
+			}
 			
 		});
 		
@@ -453,6 +460,9 @@ function StartApp(){
 								$('.soon').show();
 							}
 					}
+					if(FB){
+				FB.Canvas.setAutoGrow(true);
+			}
 		});
 		$(document.body).on('click', '.close-btn', function() {
 					$('.modal').addClass('hideMe');
@@ -528,6 +538,9 @@ function StartApp(){
 					$('.modal').removeClass('hideMe');
 					$('#alpha-layer').removeClass('hideMe');
 		}
+		if(FB){
+				FB.Canvas.setAutoGrow(true);
+			}
 		});
 		
 		
