@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-  <base href="https://web-popcorn.azurewebsites.net/frontend/">
+  
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -117,6 +117,23 @@
     <script src="./assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="assets/js/scripts.js"></script>
     
-    
+    <div id="fb-root"></div>
+<script type="text/javascript">
+            window.fbAsyncInit = function() {
+                FB.init({
+                    appId: '608552492530546',
+                    cookie: true,
+                    xfbml: true,
+                    oauth: true
+                });
+                FB.Canvas.setAutoGrow(true);
+            };
+            (function() {
+                var e = document.createElement('script'); e.async = true;
+                e.src = document.location.protocol +
+                    '//connect.facebook.net/en_US/all.js';
+                document.getElementById('fb-root').appendChild(e);
+            }());
+</script>
   </body>
 </html>
