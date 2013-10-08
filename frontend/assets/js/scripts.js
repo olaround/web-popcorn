@@ -16,6 +16,7 @@ WeekOptions[WeekCount]['start'] = '2013-1-1';
 var daysToSubtract = [-2,-3,-4,-5,-6,0,-1];
 var daysPointer = [];
 var daysPointerDisp = [];
+var dayTimeSch = [4,4,4,-3,-3,-3,-3];
 function GetApp(){
 	
 	var today =new Date();
@@ -139,15 +140,16 @@ function StartApp(){
 		function createHtmlForPage(){
 			$('.movie-posters').html('');
 			$('.movieListingBottom').html('');
-			console.log(MoviesArray);
+			//console.log(MoviesArray);
 			var DayDataCount = 0;
 			var dailyWidth = 0;
 			var dailyWidthUp = 0;
-			console.log(MoviesArray);
+		//	console.log(MoviesArray);
 			if(MoviesArray != ''){
 			$.each(MoviesArray,function(index,item){
 				if(item){
 				var dayOWeek  = new Date().getDay()+2;
+				
 				if(dayOWeek >= 7 ){
 						if(dayOWeek == 7){
 							dayOWeek = 0;
@@ -155,9 +157,10 @@ function StartApp(){
 							dayOWeek = 1;
 						}
 					}
+					console.log(dayOWeek+'dayyyyyyyyy');
 				//dayOWeek = 0;
 				
-				console.log(dayOWeek);
+				//console.log(dayOWeek);
 				//return true;
 				if(item.movieschedule){
 				var itemSchedule = JSON.parse(item.movieschedule);
@@ -257,13 +260,24 @@ function StartApp(){
 					Html += '<div>';
 					if(item.upcoming != true && item.movieschedule){
 							Html += '<h2>Shows:</h2>';
-							Html += '<p>';
+							Html += '<p class="showTimesDays">';
+							//console.log(itemSchedule);
 							$.each(itemSchedule,function(id,itm){
-								if(id != (itemSchedule.length - 1)){
-									Html += ' '+itm[0]+':'+itm[1]+' '+itm[2]+', ';
-								}else{
-									Html += ' '+itm[0]+':'+itm[1]+' '+itm[2];
-								}
+								//if(id != (itemSchedule.length - 1)){
+									//Html += ' '+itm[0]+':'+itm[1]+' '+itm[2]+', ';
+								//}else{
+									//var dayTimeSch = [-3,-3,-3,-3,4,4,4];
+									//dayOWeek
+									var currentArrayDay = dayOWeek + dayTimeSch[dayOWeek];
+									console.log(itm[parseInt(currentArrayDay)+3]);
+									if(itm[parseInt(currentArrayDay)+3] == true){
+										var classHide = '';
+									}else{
+										var classHide = 'hideMe';
+									}
+									var days = itm[3] + ',' + itm[4] + ',' + itm[5] + ',' + itm[6] + ',' + itm[7] + ',' + itm[8] + ',' + itm[9];
+									Html += '<span class="'+classHide+'" data-days="'+days+'">'+itm[0]+':'+itm[1]+' '+itm[2]+'</span>';
+								//}
 							});
 							Html += '</p>';
 					}
@@ -285,7 +299,7 @@ function StartApp(){
 							Html += '</div>';
 						}
 					}
-					console.log(Html);
+					//console.log(Html);
 					if(item.upcoming != true){
 						if(item.movieschedule){
 							dailyWidth = dailyWidth + 180;
@@ -369,6 +383,19 @@ function StartApp(){
 							$('#week-days li').removeClass('active');
 							$('#week-days li:nth-child('+daysOFWeekLiPos[ClickedLi]+')').addClass('active');
 							$('.arrow-down').css('left',daysOFWeekAnimation[ClickedLi]);
+						}else{
+							$(this).addClass('hideMe');
+						}
+                });
+				$('.showTimesDays').find('span').each(function(index, element) {
+						var currentArrayDay = parseInt(ClickedLi) + parseInt(dayTimeSch[parseInt(ClickedLi)]);
+						var currentCords = $(this).attr('data-days');
+						console.log(currentArrayDay);
+						console.log(currentCords);
+						currentCords = currentCords.split(',');
+						console.log(currentCords[parseInt(currentArrayDay)]);
+						if(currentCords[parseInt(currentArrayDay)] == 'true'){
+							$(this).removeClass('hideMe');
 						}else{
 							$(this).addClass('hideMe');
 						}
