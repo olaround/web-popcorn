@@ -365,7 +365,11 @@ function StartApp(){
 			});*/
 			
 			if(FB){
-				FB.Canvas.setAutoGrow(true);
+				window.fbAsyncInit = function () {
+        FB.Canvas.setSize();
+    }
+
+    FB.Canvas.setAutoGrow(7);
 			}
 		}
 		
@@ -424,7 +428,11 @@ function StartApp(){
 				}
 			}
 			if(FB){
-				FB.Canvas.setAutoGrow(true);
+				window.fbAsyncInit = function () {
+        FB.Canvas.setSize();
+    }
+
+    FB.Canvas.setAutoGrow(7);
 			}
 			
 		});
@@ -461,7 +469,11 @@ function StartApp(){
 							}
 					}
 					if(FB){
-				FB.Canvas.setAutoGrow(true);
+				window.fbAsyncInit = function () {
+        FB.Canvas.setSize();
+    }
+
+    FB.Canvas.setAutoGrow(7);
 			}
 		});
 		$(document.body).on('click', '.close-btn', function() {
@@ -539,7 +551,11 @@ function StartApp(){
 					$('#alpha-layer').removeClass('hideMe');
 		}
 		if(FB){
-				FB.Canvas.setAutoGrow(true);
+				window.fbAsyncInit = function () {
+        FB.Canvas.setSize();
+    }
+
+    FB.Canvas.setAutoGrow(7);
 			}
 		});
 		
