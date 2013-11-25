@@ -70,6 +70,7 @@
 
     <div class="movieListingBottomUp hideMe">
     </div>
+    <h5 class="h5Disclaimer">* Ticket price for shows after 5PM on weekdays and all shows on weekends is PKR500.  </h5>
 
 <div id="alpha-layer" class="hideMe"></div>
 <div class="modal hideMe">

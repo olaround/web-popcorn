@@ -476,3 +476,8 @@ tbody{
 	display: inline-block;
 	
 }
+.h5Disclaimer{
+	font-size: 11px;
+text-align: right;
+color: #ccc;
+}
