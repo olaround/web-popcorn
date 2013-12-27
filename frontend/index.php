@@ -70,7 +70,7 @@
 
     <div class="movieListingBottomUp hideMe">
     </div>
-    <h5 class="h5Disclaimer">* Ticket price for shows after 5PM on weekdays and all shows on weekends is PKR500.  </h5>
+    <h5 class="h5Disclaimer" style="display:none !important;">* Ticket price for shows after 5PM on weekdays and all shows on weekends is PKR500.  </h5>
 
 <div id="alpha-layer" class="hideMe"></div>
 <div class="modal hideMe">
@@ -78,7 +78,7 @@
   <div class="modal-left"><img  class="MovieImg" src="">
   						 
     <div class="movie-price overwriteMarginTop">
-      <div class="price MoviePrice">PKR 500.00</div>
+      <div class="price MoviePrice"></div>
       <a href="http://thearena.com.pk/membership.php" target="_blank"><button>Book Now</button></a>
       <a class="traliers" href="" target="_blank"><button class="tralier">Watch Trailer</button></a>
     </div>
