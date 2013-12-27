@@ -285,9 +285,13 @@ function StartApp(){
 					Html += '</div>';
 					if(item.upcoming != true){
 						if(item.threeD == true){
-						Html += '<div class="movie-price marginLeftMoviePrice"><div class="price">PKR '+pricingArray[item.price]+'</div>';
+						//Html += '<div class="movie-price marginLeftMoviePrice"><div class="price">PKR '+pricingArray[item.price]+'</div>';
+						Html += '<div class="movie-price marginLeftMoviePrice"><div class="price"></div>';
+
 						}else{
-						Html += '<div class="movie-price marginLeftMoviePrice"><div class="price">* PKR '+pricingArray[item.price]+'</div>';
+						//Html += '<div class="movie-price marginLeftMoviePrice"><div class="price">* PKR '+pricingArray[item.price]+'</div>';
+						Html += '<div class="movie-price marginLeftMoviePrice"><div class="price"></div>';
+
 						}
 						//Html += '<div class="movie-price marginLeftMoviePrice"><div class="price">PKR '+pricingArray[item.price]+'</div>';
 						Html += '<a href="http://thearena.com.pk/membership.php" target="_blank"><button>Book Now</button></a>';
@@ -544,9 +548,9 @@ function StartApp(){
 						$('.traliers').hide();
 					}
 					if($(this).attr('data-threeD') != 'true'){
-						$('.MoviePrice').html('* PKR '+pricingArray[$(this).attr('data-price')]);
+						//$('.MoviePrice').html('* PKR '+pricingArray[$(this).attr('data-price')]);
 					}else{
-						$('.MoviePrice').html('PKR '+pricingArray[$(this).attr('data-price')]);
+						//$('.MoviePrice').html('PKR '+pricingArray[$(this).attr('data-price')]);
 					}
 					$('.MovieImg').attr('src',$(this).attr('data-image'));
 					$('.Dur').html($(this).attr('data-durHH')+'hr '+$(this).attr('data-durMM')+'min');
