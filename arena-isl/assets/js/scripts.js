@@ -79,7 +79,7 @@ function StartApp(){
 		
 		// get city function
 		function getCinema(){
-			var CinemaQuery = CinemaTable.where({cinema:'The Arena'});
+			var CinemaQuery = CinemaTable.where({cinema:'The Arena',cityid:1});
 			//console.log(CinemaQuery);
 			CinemaQuery.read().then(function(todoItemsCinema) {
 				$.each(todoItemsCinema,function(indexCinema,itemCinema){
